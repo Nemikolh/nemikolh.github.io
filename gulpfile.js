@@ -44,7 +44,7 @@ gulp.task('css', function () {
             browsers: ['last 2 versions'],
             cascade: false
         }))
-        .pipe(gulp.dest('.'))
+        .pipe(gulp.dest('./dist'))
         .pipe(reload({ stream:true }));
 });
 
