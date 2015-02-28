@@ -1,2 +1,3 @@
 node_modules
 dist/*.js.map
+dist/dev.js
