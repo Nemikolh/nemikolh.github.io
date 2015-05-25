@@ -108,29 +108,42 @@ Take for instance the HTML spec and browser specific behavior leading to weird n
 
 ---
 
-## HTML 5 / CSS 3
+## HTML 5 / CSS 3 / JS
 
 - Automatic layout
 - DOM (UI data structure)
 - Stylesheet
-- Javascript <!-- .element: class="fragment" data-fragment-index="1" -->
+- Scripting for UI logic
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 
 Note:
 
 Originally HTML was designed for static content with "forms"
+HTML is a *text* markup language:
+ - property color of css affect text not container
+ - hard to center vertically ? Take a document editor (word) as an example.
 Any DOM can be rendered even with no CSS
 
 ---
 
-## HTML 5 / CSS 3
+## HTML 5 / CSS 3 / JS
 
 - **Drawbacks:**
     - Javascript (!)
-    - Not originally designed to write user interface
-    - Modularity *(web components)*
+    - Not originally designed to write user interfaces
+    - Lot of design flaws
+    - Modularity *(will be fixed with web components)*
+- <!-- .element: class="fragment" data-fragment-index="1" --> **Strength:**
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+    - Users           <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Great framework <!-- .element: class="fragment" data-fragment-index="1" --> *(e.g. Angular)*      <!-- .element: class="fragment" data-fragment-index="1" -->
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 
+Note:
+
+Design flaws: table
+Predictability and Consistency. CSS has neither. Percentage / specificity rule.
 
 ---
 
@@ -190,9 +203,11 @@ Note:
 
 ---
 
-## Design decision for Oil:
+## Design decision for Oil
 
-> TODO
+- Modularity
+- Data bindings **only**
+- Style: similar to CSS for now
 
 ---
 
