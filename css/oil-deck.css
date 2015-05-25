@@ -1,0 +1,18 @@
+.reveal section img.logo {
+    background: none;
+    margin: 0;
+    position: absolute;
+    left: 347px;
+    top: 8px;
+    border: none;
+    color: white;
+    background: white;
+    border-radius: 92px;
+    height: 150px;
+    width: 150px;
+    box-shadow: none;
+}
+
+.hidden {
+    visibility: hidden;
+}
