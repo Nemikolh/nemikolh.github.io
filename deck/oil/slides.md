@@ -217,6 +217,16 @@ Note:
 
 The automatic layout in Oil follow a set of rules similar to HTML layout.
 
+<div class="parent">
+    <div class="some-child"></div>
+    <div class="">
+        <div class="child"></div>
+    </div><!-- .element: class="placement fragment" data-fragment-index="1" -->
+    <div class="">
+        <div class="child"></div>
+    </div><!-- .element: class="placement fragment" data-fragment-index="2" -->
+</div>
+
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 
 ---
