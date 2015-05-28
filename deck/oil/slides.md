@@ -217,14 +217,25 @@ Note:
 
 The automatic layout in Oil follow a set of rules similar to HTML layout.
 
+<div class="reset">
+<div class="fullwidth">
+    <span class="legend block">max width</span>
+    <div class="block limits">
+        <div class="dashed"></div>
+        <div class="left-arrow"></div>
+        <div class="right-arrow"></div>
+    </div>
+</div>
 <div class="parent">
     <div class="some-child"></div>
     <div class="">
         <div class="child"></div>
     </div><!-- .element: class="placement fragment" data-fragment-index="1" -->
     <div class="">
-        <div class="child"></div>
+        <div class="child red"></div>
+        <div class=""></div><!-- .element: class="child fragment " data-fragment-index="3" -->
     </div><!-- .element: class="placement fragment" data-fragment-index="2" -->
+</div><!-- .element: class="parent fragment always-visible" data-fragment-index="3" -->
 </div>
 
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
