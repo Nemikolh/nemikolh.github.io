@@ -11,6 +11,7 @@ Nemikolh
 ## Agenda
 
 - Background
+- Two particular cases
 - Design
 - Layout
 - Focus
@@ -18,6 +19,9 @@ Nemikolh
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
+
+Note:
+A little background to help you have
 
 ---
 
@@ -104,7 +108,7 @@ Take for instance the HTML spec and browser specific behavior leading to weird n
 
 ---
 
-## State of the art
+## Two particular cases
 
 ---
 
