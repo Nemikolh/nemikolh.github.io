@@ -91,7 +91,7 @@ slowing down the UI.
 
 ## Markup language
 
-- Pros:
+- Pros: <!-- .element: class="fragment" data-fragment-index="1" -->
     - Dedicated engine                                  <!-- .element: class="fragment" data-fragment-index="1" -->
     - Runtime optimizations                             <!-- .element: class="fragment" data-fragment-index="1" -->
     - Decouple UI/UX designer work from Core Engineers  <!-- .element: class="fragment" data-fragment-index="1" -->
@@ -179,6 +179,7 @@ Predictability and Consistency. CSS has neither. Percentage / specificity rule.
 
 - Property bindings
 - Javascript (V8)
+- Events
 
     ```js
     ApplicationWindow {
@@ -204,6 +205,24 @@ Note:
 
 - Use ideas from Reactive programming (bindings)
 
+---
+
+## Summary
+
+- HTML
+    - Javascript
+    - Modularity
+    - Compatibility across engines
+- QML
+    - Application logic can be in C++ or QML/Js or both
+
+Note:
+
+Only cons here, good part (subjective) go in design decision.
+For QML, it makes sense for them as they want to provide a full
+alternative to writing classic c++ qt application in a simple language.
+But the done side is that it makes interaction with complex application harder
+in my opinion.
 
 ---
 
@@ -212,6 +231,11 @@ Note:
 - Modularity
 - Data bindings **only**
 - Style: similar to CSS for now
+- Application logic is in the application language **only**
+
+Note:
+
+The final dot refer to the last previous point of QML.
 
 ---
 
@@ -248,6 +272,13 @@ The automatic layout in Oil follow a set of rules similar to HTML layout.
 
 ## Focus
 
+Note:
+
+In the image above we can see how focus interact with the ui structure.
+The idea is that if you have only a gamepad or a keyboard as a controller,
+you need a clever way to navigate the tree to find the most relevant node
+that will have the focus.
+
 ---
 
 ## Demo
@@ -257,10 +288,15 @@ The automatic layout in Oil follow a set of rules similar to HTML layout.
 ## Future
 
 - Finish data-bindings implementation
-- Introduce font rendering
+- Font rendering
 - Animation
 - Find a more expressive grammar over xml (?)
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
+
+Note:
+
+Font rendering is hard: harfbuzz, freetype, rendering backend, fontconfig
+and patents.
 
 ---
 
