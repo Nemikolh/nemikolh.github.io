@@ -215,6 +215,7 @@ Note:
     - Compatibility across engines
 - QML
     - Application logic can be in C++ or QML/Js or both
+- Scaleform<!-- .element: class="fragment" data-fragment-index="1" -->
 
 Note:
 
@@ -224,11 +225,17 @@ alternative to writing classic c++ qt application in a simple language.
 But the done side is that it makes interaction with complex application harder
 in my opinion.
 
+Scaleform is to mentioned because of the variety of tools that surrounds it.
+Scaleform use ActionScript which is roughly ES6, illustrator and photoshop
+to create / manage assets ( vector graphics, custom animations, 3D ui ).
+Everything is manipulated through tools from adobe suite.
+Scaleform Gfx is the library part of the stack that game links to.
+
 ---
 
 ## Design decision for Oil
 
-- Modularity
+- Markup with views / templates
 - Data bindings **only**
 - Style: similar to CSS for now
 - Application logic is in the application language **only**
@@ -236,6 +243,78 @@ in my opinion.
 Note:
 
 The final dot refer to the last previous point of QML.
+Modularity through templates and views. Note: I'm not sure
+yet about what would be the best way to resolve dependencies.
+
+---
+
+## Languages at a glance
+
+```xml
+<view name="main">
+    <template name="foobar" />
+    Lorem ipsum
+    <group class="maecenas">
+        <button class="btn">dolor sit amet</button>
+        <button class="btn">consectetur</button>
+    </group>
+</view>
+
+<template name="foobar">
+    <button/>
+</template>
+```
+
+```css
+.maecenas {
+    margin: expand;
+}
+
+.btn {
+    width: auto;
+}
+```
+
+Note:
+
+* The view tag work like an iframe or an html tag. It defines a closed rendering
+context.
+* The template outside a view tag behave as a constructor for a sub tree. It can
+then be imported inside the view with the template tag.
+*
+
+---
+
+## View stack
+
+```xml
+<view name="main">
+    <button gotoview="foobar"></button>
+</view>
+
+<view name="foobar">
+    <button action="pop_view"></button>
+    <button gotoview="bazz"></button>
+</view>
+
+<view name="bazz">
+    <button gotoview="main"></button>
+</view>
+```
+<!-- .element: class="reset" -->
+<div class="view-stack-container">
+<div class="view-stack">
+  <div class="stack-element">bazz</div><!-- .element: class="current-visible stack-element fragment" data-fragment-index="1" -->
+  <div class="stack-element">foobar</div><!-- .element: class="current-visible stack-element fragment" data-fragment-index="1" -->
+  <div class="stack-element">main</div>
+</div><!-- .element: class="view-stack fragment" data-fragment-index="1" -->
+</div>
+
+<div class="dummy"></div><!-- .element: class="hidden fragment" data-fragment-index="2" -->
+
+Note:
+
+The view stack work like a stack with a few differences.
 
 ---
 
@@ -243,7 +322,7 @@ The final dot refer to the last previous point of QML.
 
 ---
 
-The automatic layout in Oil follow a set of rules similar to HTML layout.
+The automatic layout in Oil follow a set of rules similar to HTML.
 
 <div class="reset">
 <div class="fullwidth">
@@ -272,6 +351,9 @@ The automatic layout in Oil follow a set of rules similar to HTML layout.
 
 ## Focus
 
+```xml
+```
+
 Note:
 
 In the image above we can see how focus interact with the ui structure.
@@ -285,12 +367,41 @@ that will have the focus.
 
 ---
 
+## Demo
+
+```xml
+<view name="main">
+    <group class="center single-line">
+        <group class="shop">
+            <button class="item"></button>
+            ...
+        </group>
+        <group class="inventory">
+            <button class="item"></button>
+            ...
+        </group>
+    </group>
+    <group class="center">
+        <group class="shop">
+            <button class="item"></button>
+            ...
+        </group>
+        <group class="inventory">
+            <button class="item"></button>
+            ...
+        </group>
+    </group>
+</view>
+```
+
+---
+
 ## Future
 
 - Finish data-bindings implementation
 - Font rendering
 - Animation
-- Find a more expressive grammar over xml (?)
+- Write a better grammar for the markup (?)
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 
 Note:
