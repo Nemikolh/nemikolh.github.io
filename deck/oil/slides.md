@@ -277,11 +277,11 @@ yet about what would be the best way to resolve dependencies.
 
 Note:
 
-* The view tag work like an iframe or an html tag. It defines a closed rendering
+* The view tag work like an iframe / html tag. It defines a unique rendering
 context.
 * The template outside a view tag behave as a constructor for a sub tree. It can
 then be imported inside the view with the template tag.
-*
+* The ambient model apply to a particular view.
 
 ---
 
@@ -314,7 +314,9 @@ then be imported inside the view with the template tag.
 
 Note:
 
-The view stack work like a stack with a few differences.
+The view stack allow to jump directly to a view which is below in the stack.
+You can either pop the view or return directly to an existing view. If the view does
+not exist then the the view is added on top of the stack.
 
 ---
 
@@ -352,6 +354,16 @@ The automatic layout in Oil follow a set of rules similar to HTML.
 ## Focus
 
 ```xml
+<view>
+    <group class="one-line">
+        <button class="btn"/>
+        <button class="btn"/>
+    </group>
+    <group class="one-line">
+        <button class="btn"/>
+        <button class="btn"/>
+    </group>
+</view>
 ```
 
 Note:
