@@ -365,6 +365,20 @@ The automatic layout in Oil follow a set of rules similar to HTML.
     </group>
 </view>
 ```
+<!-- .element: class="reset" -->
+<div class="view-focus">
+<div class="focus-group">
+  <div class="focus-element"></div><!-- .element: class="focus-element fragment" data-fragment-index="1" -->
+  <div class="focus-element"></div>
+</div>
+<div class="focus-group">
+  <div class="focus-element"></div><!-- .element: class="focus-element fragment" data-fragment-index="2" -->
+  <div class="focus-element"></div>
+</div>
+</div>
+
+<div class="dummy"></div><!-- .element: class="hidden fragment" data-fragment-index="3" -->
+
 
 Note:
 

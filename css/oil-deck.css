@@ -105,7 +105,7 @@ div.view-stack-container {
     display: inline-block;
 }
 
-div.view-stack {
+div.view-stack, div.view-focus {
     width: 200px;
     top: -200px;
     left: 50px;
@@ -115,6 +115,10 @@ div.view-stack {
     font-size: 0.55em;
     font-family: monospace;
     line-height: 1.2em;
+}
+
+div.focus-group {
+    
 }
 
 .view-stack div.stack-element {
