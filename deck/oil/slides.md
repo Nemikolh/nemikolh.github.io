@@ -212,7 +212,6 @@ Note:
 - HTML
     - Javascript
     - Modularity
-    - Compatibility across engines
 - QML
     - Application logic can be in C++ or QML/Js or both
 - Scaleform<!-- .element: class="fragment" data-fragment-index="1" -->
@@ -366,6 +365,7 @@ The automatic layout in Oil follow a set of rules similar to HTML.
 </view>
 ```
 <!-- .element: class="reset" -->
+<div class="view-stack-container">
 <div class="view-focus">
 <div class="focus-group">
   <div class="focus-element"></div><!-- .element: class="focus-element fragment" data-fragment-index="1" -->
@@ -374,6 +374,7 @@ The automatic layout in Oil follow a set of rules similar to HTML.
 <div class="focus-group">
   <div class="focus-element"></div><!-- .element: class="focus-element fragment" data-fragment-index="2" -->
   <div class="focus-element"></div>
+</div>
 </div>
 </div>
 

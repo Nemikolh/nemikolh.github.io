@@ -105,12 +105,15 @@ div.view-stack-container {
     display: inline-block;
 }
 
+div.view-stack {
+    border: 1px solid white;
+}
+
 div.view-stack, div.view-focus {
     width: 200px;
     top: -200px;
     left: 50px;
     position: absolute;
-    border: 1px solid white;
     display: inline-block;
     font-size: 0.55em;
     font-family: monospace;
@@ -118,7 +121,25 @@ div.view-stack, div.view-focus {
 }
 
 div.focus-group {
-    
+    padding-top: 3px;
+    margin-top: 25px;
+    border: 1px solid rgb(249, 89, 46);
+    width: 122px;
+}
+
+.reveal div.focus-element.fragment.current-fragment {
+    border: 1px solid white;
+}
+
+.reveal div.focus-element.fragment,
+.reveal div.focus-element {
+    height: 50px;
+    width: 50px;
+    opacity: 1;
+    visibility: visible;
+    border: 1px solid transparent;
+    background-color: green;
+    display: inline-block;
 }
 
 .view-stack div.stack-element {
