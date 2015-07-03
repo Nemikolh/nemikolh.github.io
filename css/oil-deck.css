@@ -13,6 +13,38 @@
     box-shadow: none;
 }
 
+.reveal .emphasis {
+    color: rgb(170, 2, 99);
+}
+
+.reveal section img.logo-rust {
+    margin: 0px;
+    position: absolute;
+    right: 150px;
+    top: 8px;
+    border: medium none;
+    color: #FFF;
+    background: #FFF none repeat scroll 0% 0%;
+    border-radius: 80px;
+    height: 150px;
+    width: 150px;
+    box-shadow: none;
+}
+
+.reveal section img.logo-oil {
+    margin: 0px;
+    position: absolute;
+    right: 100px;
+    top: 130px;
+    border: medium none;
+    color: #FFF;
+    background: #FFF none repeat scroll 0% 0%;
+    border-radius: 80px;
+    height: 150px;
+    width: 150px;
+    box-shadow: none;
+}
+
 .hidden {
     visibility: hidden;
 }

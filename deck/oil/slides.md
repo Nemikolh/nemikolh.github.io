@@ -116,8 +116,10 @@ Take for instance the HTML spec and browser specific behavior leading to weird n
 
 - Automatic layout
 - DOM (UI data structure)
-- Stylesheet
-- Scripting for UI logic
+- Stylesheet separates presentation from content
+- Selectors
+  * pseudo-classes
+  * specificity
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 
 Note:
@@ -126,7 +128,29 @@ Originally HTML was designed for static content with "forms"
 HTML is a *text* markup language:
  - property color of css affect text not container
  - hard to center vertically ? Take a document editor (word) as an example.
-Any DOM can be rendered even with no CSS
+
+CSS 2.1/3:
+ - allows authors and users to attach style (e.g., fonts and spacing) to structured documents
+ - separates the presentation style of documents from the content of documents
+ - supports media specific style (printer, )
+ - apply properties through selectors (expression * element -> boolean)
+    - specificity
+    - class selector
+    - attribute selector
+    - universal selector *
+    - pseudo-classes
+      - :link, :visited                     (link class)
+      - :hover, :active, :focus             (user action) (focus -> accept form of input such as keyboard/mouse)
+      - :target                             (when the uri refer to a location inside the html page (end with #id))
+      - :lang                               (select based on the language used)
+      - :enabled, :disabled, :checked       (ui element that have an enabled state)
+      - :root, :nth-child(), :first-child   (structural selector)
+      - :not()
+    - pseudo elements
+      - ::first-line
+      - ::first-letter
+      - ::before
+      - ::after
 
 ---
 
@@ -134,116 +158,123 @@ Any DOM can be rendered even with no CSS
 
 - **Drawbacks:**
     - Javascript (!)
-    - Not originally designed to write user interfaces
-    - Lot of design flaws
+    - Dynamic content
     - Modularity *(will be fixed with web components)*
 - <!-- .element: class="fragment" data-fragment-index="1" --> **Strength:**
 <!-- .element: class="fragment" data-fragment-index="1" -->
 
-    - Users           <!-- .element: class="fragment" data-fragment-index="1" -->
-    - Great framework <!-- .element: class="fragment" data-fragment-index="1" --> *(e.g. Angular)*      <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Users       <!-- .element: class="fragment" data-fragment-index="1" -->
+    - Great tools <!-- .element: class="fragment" data-fragment-index="1" -->
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 
 Note:
 
+Not originally designed to write user interfaces
+Lot of design flaws
 Design flaws: table
-Predictability and Consistency. CSS has neither. Percentage / specificity rule.
+Css: global scope
+Dynamic content needs js support
 
 ---
 
 ## QML
 
 - Support for module / components
+- Property bindings
+- Events have explicit definition
+- No default automatic layout
 - Complete new syntax
 
-    ```js
-    import QtQuick 2.3
+---
 
-    ApplicationWindow {
+## QML an example
 
-        width: 200
-        height: 100
+```js
+import QtQuick 2.3
 
-        Text {
-            anchors.centerIn: parent
-            text: "Hello, World!"
-        }
+ApplicationWindow {
+
+    width: 200
+    height: 100
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: parent.color = "blue"
     }
-    ```
-<!-- .element: class="fragment" data-fragment-index="1" -->
+
+    Text {
+        anchors.centerIn: parent
+        text: "Hello, World!"
+    }
+}
+```
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 
 ---
 
-## QML (More)
+## QML ? But...
 
-- Property bindings
-- Javascript (V8)
-- Events
+- Javascript (again)
+- Model can be defined:
 
-    ```js
-    ApplicationWindow {
-        width: 400
-        height: 200
+  - *either as UI element with some JS attached to it...*
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: parent.color = "blue"
-        }
+  - *...or as C++ model binded to some UI element.*
 
-        Rectangle {
-            width: parent.width / 2
-            height: parent.height
-            x: parent.width / 2
-        }
-    }
-    ```
-<!-- .element: class="fragment" data-fragment-index="1" -->
+- <!-- .element: class="fragment" data-fragment-index="1" --> Did they really solved the UI problem ?<!-- .element: class="fragment" data-fragment-index="1" -->
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 
 Note:
 
-- Use ideas from Reactive programming (bindings)
+UI problem: a friendly markup language for designers that allow a cleaner
+separation between the application engineer concerns and the designers one.
 
 ---
 
-## Summary
+## Problems
 
-- HTML
-    - Javascript
-    - Modularity
-- QML
-    - Application logic can be in C++ or QML/Js or both
-- Scaleform<!-- .element: class="fragment" data-fragment-index="1" -->
-
-Note:
-
-Only cons here, good part (subjective) go in design decision.
-For QML, it makes sense for them as they want to provide a full
-alternative to writing classic c++ qt application in a simple language.
-But the done side is that it makes interaction with complex application harder
-in my opinion.
-
-Scaleform is to mentioned because of the variety of tools that surrounds it.
-Scaleform use ActionScript which is roughly ES6, illustrator and photoshop
-to create / manage assets ( vector graphics, custom animations, 3D ui ).
-Everything is manipulated through tools from adobe suite.
-Scaleform Gfx is the library part of the stack that game links to.
+- Scripting (application logic)
+- Modularity
+- User Interaction Flow
 
 ---
 
 ## Design decision for Oil
 
-- Markup with views / templates
-- Data bindings **only**
+<img class="logo-oil" src="img/logo.svg" />
+
+- Scripting (ui logic) solved by:
+  - Data bindings **only**
+  - `gotoview`<!-- .element: class="emphasis" -->
+- Modularity solved by:
+  - Markup with views / templates
+  - Symbol resolution not yet defined though
+
 - Style: similar to CSS for now
-- Application logic is in the application language **only**
+- Application logic in **Rust**<!-- .element: class="emphasis" -->
+- **no scripting**
+- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<!-- .element: class="hidden" -->
+
 
 Note:
 
-The final dot refer to the last previous point of QML.
 Modularity through templates and views. Note: I'm not sure
 yet about what would be the best way to resolve dependencies.
+
+---
+
+## Wait, you said Rust ?
+
+Yes I did.
+
+---
+
+<img class="logo-rust" src="img/rust-logo-blk.svg" />
+
+- Memory safety with ownership
+- No data races
+- test
+- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<!-- .element: class="hidden" -->
 
 ---
 
