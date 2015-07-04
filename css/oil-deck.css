@@ -17,11 +17,43 @@
     color: rgb(170, 2, 99);
 }
 
+.reveal .cpp-text-float {
+    position: absolute;
+    top: 85px;
+    left: -50px;
+}
+
+.reveal .rust-text-float {
+    position: absolute;
+    top: 230px;
+    left: -50px;
+}
+
+.reveal section img.html_stack {
+    margin: 0px;
+    position: absolute;
+    right: 300px;
+    top: 100px;
+    border: medium none;
+    background: transparent none repeat scroll 0% 0%;
+    box-shadow: none;
+}
+
+.reveal section img.qml_stack {
+    margin: 0px;
+    position: absolute;
+    right: 150px;
+    top: 100px;
+    border: medium none;
+    box-shadow: none;
+    background: transparent none repeat scroll 0% 0%;
+}
+
 .reveal section img.logo-rust {
     margin: 0px;
     position: absolute;
     right: 150px;
-    top: 8px;
+    top: 130px;
     border: medium none;
     color: #FFF;
     background: #FFF none repeat scroll 0% 0%;

@@ -233,9 +233,20 @@ separation between the application engineer concerns and the designers one.
 
 ## Problems
 
+<img class="html_stack" src="img/html_stack.png" />
+<img class="qml_stack" src="img/qml_stack.png" />
+
+- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<!-- .element: class="hidden" -->
 - Scripting (application logic)
+- UI Design pattern
 - Modularity
 - User Interaction Flow
+- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<!-- .element: class="hidden" -->
+
+Note:
+
+Would be nice to have UI Design Pattern directly understood by the engine.
+Allow for better optimizations and avoid DRY problems.
 
 ---
 
@@ -269,12 +280,95 @@ Yes I did.
 
 ---
 
+## Rust
+
 <img class="logo-rust" src="img/rust-logo-blk.svg" />
 
+- LLVM based
 - Memory safety with ownership
 - No data races
-- test
+- No GC
+- UTF-8
+- Modern packet manager
+- <!-- .element: class="fragment" data-fragment-index="1" -->**No null pointers**<!-- .element: class="emphasis fragment" data-fragment-index="1" -->
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<!-- .element: class="hidden" -->
+
+Note:
+
+Modern packet manager for system programming !!
+
+---
+
+<div class="cpp-text-float">C++</div>
+
+```cpp
+unique_ptr<A> a(new A());
+give_ownership(a);
+
+// Pick one:
+// - segfault
+// - use after free
+a->do_stuff();
+```
+
+<div class="rust-text-float">Rust</div><!-- .element: class="rust-text-float fragment" data-fragment-index="1" -->
+
+```rust
+let a = A::new();
+give_ownership(a);
+
+// Won't compile.
+a.do_stuff();
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```
+<anon>:22:5: 22:6 error: use of moved value: `a`
+<anon>:22     a.do_stuff();
+              ^
+<anon>:20:20: 20:21 note: `a` moved here because it has type `A`, which is
+                          non-copyable
+<anon>:20     give_ownership(a);
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+Move semantics have been introduced in C++ to allow a clear
+distinction between a move and a copy.
+
+Rust is move by default and copy is explicit whereas in C++ copy
+is implicit (except if the programmer explicitly reject copy ctor & assignment).
+
+The C++ example can be segfault if during the move unique_ptr set to a null pointer
+the pointer value of a.
+
+Note the performance impact on a large C++ code base. To avoid problem, you
+are likely going to perform a check everytime you manage a pointer (but you also
+need to guard yourself against dangerous move and recommend to set moved value
+pointer to zero). So you have an overhead because you trade memory safety against
+speed.
+
+---
+
+## Why Rust ?
+
+- Learn about UI from scratch
+- Performance
+- Concurrency
+- Emscripten
+
+Note:
+
+Have you heard about linux from scratch ?
+    Well it is not really about writing it from scratch, but
+more about compiling it from scratch. However as you have full
+control on the process you learn a lot on the linux architecture.
+
+Learning reason mainly, but also because:
+- Nice support for string manipulation
+- Servo
+- Targetting Game devs
 
 ---
 
@@ -422,6 +516,8 @@ that will have the focus.
 ---
 
 ## Demo
+
+
 
 ---
 
