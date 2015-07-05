@@ -413,7 +413,7 @@ then be imported inside the view with the template tag.
 
 ---
 
-## View stack
+## View flow
 
 ```xml
 <view name="main">
@@ -525,9 +525,7 @@ It also pick
 
 ---
 
-## Layout: auto
-
-
+## Layout: demo
 
 ---
 
@@ -569,40 +567,41 @@ The idea is that if you have only a gamepad or a keyboard as a controller,
 you need a clever way to navigate the tree to find the most relevant node
 that will have the focus.
 
----
-
-## Demo
-
-
+Natural way to interact with the ui.
 
 ---
 
-## Demo
+## Focus: demo (explanations)
 
 ```xml
 <view name="main">
     <group class="center single-line">
-        <group class="shop">
-            <button class="item"></button>
+        <group class="square">
+            <button class="btn"></button>
             ...
         </group>
-        <group class="inventory">
-            <button class="item"></button>
+        <group class="square">
+            <button class="btn"></button>
             ...
         </group>
     </group>
     <group class="center">
-        <group class="shop">
-            <button class="item"></button>
+        <group class="square">
+            <button class="btn"></button>
             ...
         </group>
-        <group class="inventory">
-            <button class="item"></button>
+        <group class="square">
+            <button class="btn"></button>
             ...
         </group>
     </group>
+    <button class="center btn"></button>
 </view>
 ```
+
+---
+
+## Focus: demo
 
 ---
 

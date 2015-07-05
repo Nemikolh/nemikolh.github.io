@@ -81,6 +81,10 @@
     box-shadow: none;
 }
 
+.reveal pre code {
+    max-height: 500px;
+}
+
 .reveal section img.data_bindings_repeat {
     margin: 0px;
     position: absolute;
