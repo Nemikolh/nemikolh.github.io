@@ -31,19 +31,25 @@ A little background to help you have
 
 ## Immediate mode GUI
 
-```cpp
-if (ImGui::Button("Press me")) {
+```csharp
+// Assign the skin to be the one currently used.
+GUI.skin = mySkin;
+// Make a background box
+GUI.Box(new Rect(10,10,100,90), "Menu");
+
+if(GUI.Button(new Rect(20,40,80,20), "Press me!")) {
     // Here run the logic when the button is pressed.
 }
+// Assign the currently skin to be Unity's default.
+GUI.skin = null;
 ```
 
 - Pros:                                                 <!-- .element: class="fragment" data-fragment-index="1" -->
     - Easy to use                                       <!-- .element: class="fragment" data-fragment-index="1" -->
 - Cons:                                                 <!-- .element: class="fragment" data-fragment-index="2" -->
     - Use globals to store UI state                     <!-- .element: class="fragment" data-fragment-index="2" -->
-    - Hard to configure                                 <!-- .element: class="fragment" data-fragment-index="2" -->
     - Mix logic with presentations                      <!-- .element: class="fragment" data-fragment-index="2" -->
-    - Screen sizes                                      <!-- .element: class="fragment" data-fragment-index="2" -->
+    - No event bubbling                                      <!-- .element: class="fragment" data-fragment-index="2" -->
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
 
 Note:
