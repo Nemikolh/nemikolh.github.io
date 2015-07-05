@@ -250,7 +250,7 @@ Allow for better optimizations and avoid DRY problems.
 
 ---
 
-## Design decision for Oil
+## Design decisions for Oil
 
 <img class="logo-oil" src="img/logo.svg" />
 
@@ -344,7 +344,7 @@ The C++ example can be segfault if during the move unique_ptr set to a null poin
 the pointer value of a.
 
 Note the performance impact on a large C++ code base. To avoid problem, you
-are likely going to perform a check everytime you manage a pointer (but you also
+are likely going to perform a check every time you manage a pointer (but you also
 need to guard yourself against dangerous move and recommend to set moved value
 pointer to zero). So you have an overhead because you trade memory safety against
 speed.
@@ -368,15 +368,19 @@ control on the process you learn a lot on the linux architecture.
 Learning reason mainly, but also because:
 - Nice support for string manipulation
 - Servo
-- Targetting Game devs
+- Targeting Game devs
+
+If you seek what the web will be in 2020,
+you might be surprised by how crazy it became.
+Did you heard about the WebAssembly draft ?
 
 ---
 
-## Languages at a glance
+## Oil's languages at a glance
 
 ```xml
 <view name="main">
-    <template name="foobar" />
+    <template path="foobar" />
     Lorem ipsum
     <group class="maecenas">
         <button class="btn">dolor sit amet</button>
@@ -444,11 +448,44 @@ not exist then the the view is added on top of the stack.
 
 ---
 
-## Layout
+## Data-bindings
+
+<div class="as-pre"><code class="xml hljs "><span class="hljs-tag">&lt;<span class="hljs-title">view</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"main"</span>&gt;</span>
+    Hello <span class="data-bindings fragment" data-fragment-index="1">{{name}}</span> !
+    <span class="hljs-tag">&lt;<span class="hljs-title">repeat</span> <span class="hljs-attribute">iter</span>=<span class="hljs-value data-bindings fragment" data-fragment-index="2">"{{friends}}"</span> <span class="hljs-attribute">template-name</span>=<span class="hljs-value">"friend"</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">view</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">template</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"friend"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">group</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"li"</span>&gt;</span><span class="data-bindings fragment" data-fragment-index="1">{{name}}</span> is <span class="data-bindings fragment" data-fragment-index="1">{{status}}</span><span class="hljs-tag">&lt;/<span class="hljs-title">group</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">template</span>&gt;</span></code></div>
+
+<img class="data_bindings_simple current-visible fragment" src="img/data-bindings_simple.png" data-fragment-index="1" />
+<img class="data_bindings_repeat current-visible fragment" src="img/data-bindings_repeat.png" data-fragment-index="2" />
+
+Note:
+
+Data bindings is all about change detection and knowing when
+the data should be updated.
 
 ---
 
-The automatic layout in Oil follow a set of rules similar to HTML.
+## Layout
+
+<div class="a-screen">
+    <span class="legend">window width</span>
+    <span class="legend rotate">window height</span>
+</div>
+
+Note:
+Screen constraints the space, now you can extends those rules
+HTML ignore the height one assuming a vertical scrollbars.
+It also pick
+
+---
+
+## Layout
+
+* Left to Right
+* Automatic layout (equivalent to HTML one)
 
 <div class="reset">
 <div class="fullwidth">
@@ -460,18 +497,37 @@ The automatic layout in Oil follow a set of rules similar to HTML.
     </div>
 </div>
 <div class="parent">
-    <div class="some-child"></div>
+    <div class="some-child"><div class="green-block">1</div></div>
     <div class="">
-        <div class="child"></div>
+        <div class="child"><div class="green-block">2</div></div>
     </div><!-- .element: class="placement fragment" data-fragment-index="1" -->
     <div class="">
-        <div class="child red"></div>
-        <div class=""></div><!-- .element: class="child fragment " data-fragment-index="3" -->
+        <div class="child red">3</div>
+        <div class=""><div class="green-block">3</div></div><!-- .element: class="child fragment " data-fragment-index="3" -->
     </div><!-- .element: class="placement fragment" data-fragment-index="2" -->
 </div><!-- .element: class="parent fragment always-visible" data-fragment-index="3" -->
 </div>
 
 - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX <!-- .element: class="hidden" -->
+
+---
+
+## Layout
+
+* "New line"-like properties
+  - `auto`<!-- .element: class="emphasis" -->
+
+    Force a line return but does not use all the space available.
+
+  - `expand`<!-- .element: class="emphasis" -->
+
+    Force a line return and consume all the space available
+
+---
+
+## Layout: auto
+
+
 
 ---
 

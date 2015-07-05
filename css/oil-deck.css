@@ -29,6 +29,69 @@
     left: -50px;
 }
 
+.reveal div.as-pre {
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    display: block;
+    position: relative;
+    width: 90%;
+    margin: 20px auto;
+    text-align: left;
+    font-size: 0.55em;
+    font-family: monospace;
+    line-height: 1.2em;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+}
+
+.reveal div.as-pre code {
+    display: block;
+    padding: 5px;
+    overflow: auto;
+    max-height: 400px;
+    word-wrap: normal;
+    background: #3F3F3F;
+    color: #DCDCDC;
+    white-space: pre;
+    margin: 1em 0px;
+}
+
+.reveal .slides section .fragment.data-bindings {
+  opacity: 1;
+  visibility: visible;
+}
+
+.reveal .slides section .fragment.data-bindings.current-fragment {
+    color: rgb(241, 0, 0);
+    background-color: rgb(152, 61, 61);
+    border-color: rgb(159, 31, 31);
+}
+
+
+.reveal section img.data_bindings_simple {
+    margin: 0px;
+    position: absolute;
+    left: 25px;
+    bottom: -130px;
+    border: medium none;
+    background: transparent none repeat scroll 0% 0%;
+    box-shadow: none;
+}
+
+.reveal section img.data_bindings_repeat {
+    margin: 0px;
+    position: absolute;
+    left: 25px;
+    bottom: -130px;
+    border: medium none;
+    background: transparent none repeat scroll 0% 0%;
+    box-shadow: none;
+    height: 168px;
+}
+
 .reveal section img.html_stack {
     margin: 0px;
     position: absolute;
@@ -86,6 +149,39 @@
     opacity: 1;
 }
 
+.reveal .slides div.a-screen {
+    width: 400px;
+    height: 300px;
+    border: 2px dashed white;
+    margin: auto;
+    margin-top: 5px;
+}
+
+.reveal div.a-screen .legend.rotate {
+    display: block;
+    position: absolute;
+    left: 175px;
+    top: 250px;
+    width: 250px;
+}
+
+.reveal .slides .a-screen .rotate {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+
+    /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+    /*-webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -o-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;*/
+
+    /* Should be unset in IE9+ I think. */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
 
 div.reset {
     display: inline-block;
@@ -159,7 +255,7 @@ div.limits .right-arrow {
 }
 
 div.reset div.parent {
-    border: 1px solid white;
+    border: 3px solid white;
     width: auto;
 }
 
@@ -215,6 +311,21 @@ div.focus-group {
 .parent div.some-child,
 .parent div.child {
     width: 200px;
+    height: 50px;
+    position: relative;
+}
+
+.parent div.some-child,
+.parent div.child,
+.parent div.green-block {
+    left: 0px;
+    text-align: center;
+    line-height: 45px;
+}
+
+.parent div.green-block {
+    position: absolute;
+    width: 215px;
     height: 50px;
     background: green;
 }
