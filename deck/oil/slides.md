@@ -308,7 +308,7 @@ Modern packet manager for system programming !!
 
 ```cpp
 unique_ptr<A> a(new A());
-give_ownership(a);
+give_ownership(std::move(a));
 
 // Pick one:
 // - segfault
