@@ -1,0 +1,50 @@
+{
+  "name": "spells",
+  "version": "0.0.0",
+  "description": "Spells experiments",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "prepublish": "npm run typings && npm run build",
+    "typings": "typings install",
+    "build": "webpack --prod"
+  },
+  "author": "Nemikolh",
+  "license": "MIT",
+  "devDependencies": {
+    "awesome-typescript-loader": "1.0.0",
+    "bootstrap-sass": "3.3.6",
+    "colors": "1.1.2",
+    "css-loader": "0.23.1",
+    "docopt": "0.6.2",
+    "es6-promise": "3.2.1",
+    "es6-shim": "0.35.1",
+    "es7-reflect-metadata": "1.6.0",
+    "file-loader": "0.8.5",
+    "html-webpack-plugin": "2.21.0",
+    "json-loader": "0.5.4",
+    "node-sass": "3.7.0",
+    "raw-loader": "0.5.1",
+    "sass-loader": "3.2.0",
+    "style-loader": "0.13.1",
+    "ts-helpers": "1.1.1",
+    "typescript": "1.8.10",
+    "typings": "1.1.0",
+    "url-loader": "0.5.7",
+    "webpack": "1.13.1",
+    "webpack-dev-server": "1.14.1",
+    "webpack-merge": "0.14.0"
+  },
+  "dependencies": {
+    "@angular/common": "2.0.0-rc.1",
+    "@angular/compiler": "2.0.0-rc.1",
+    "@angular/core": "2.0.0-rc.1",
+    "@angular/platform-browser": "2.0.0-rc.1",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.1",
+    "@angular/router": "3.0.0-alpha.3",
+    "core-js": "2.4.0",
+    "lodash": "4.13.1",
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "0.6.12"
+  }
+}

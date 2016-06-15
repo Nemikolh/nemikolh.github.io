@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Spells</title>
+
+  <% for (let file of htmlWebpackPlugin.files.js) {%>
+  <% if (file.indexOf("index") == -1) {%>
+    <script src="/spells/dist/<%= file %>"></script>
+  <% } %>
+  <% } %>
+
+</head>
+
+<body>
+
+  <app></app>
+  <% for (let file of htmlWebpackPlugin.files.js) {%>
+  <% if (file.indexOf("index") != -1) {%>
+    <script src="/spells/dist/<%= file %>"></script>
+  <% } %>
+  <% } %>
+</body>
+</html>
