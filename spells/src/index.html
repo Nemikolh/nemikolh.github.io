@@ -9,7 +9,11 @@
 
   <% for (let file of htmlWebpackPlugin.files.js) {%>
   <% if (file.indexOf("index") == -1) {%>
-    <script src="/spells/dist/<%= file %>"></script>
+      <% if(htmlWebpackPlugin.options.is_dev) { %>
+          <script src="<%= file %>"></script>
+      <% } else { %>
+          <script src="/spells/dist/<%= file %>"></script>
+      <% } %>
   <% } %>
   <% } %>
 
@@ -20,7 +24,11 @@
   <app></app>
   <% for (let file of htmlWebpackPlugin.files.js) {%>
   <% if (file.indexOf("index") != -1) {%>
-    <script src="/spells/dist/<%= file %>"></script>
+      <% if(htmlWebpackPlugin.options.is_dev) { %>
+          <script src="<%= file %>"></script>
+      <% } else { %>
+          <script src="/spells/dist/<%= file %>"></script>
+      <% } %>
   <% } %>
   <% } %>
 </body>
