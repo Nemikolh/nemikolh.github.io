@@ -74,7 +74,7 @@ export interface CharStats {
   level: number;
 }
 
-export type EntityIn = CharStats & { current: CharStats };
+export type EntityIn = CharStats & { current?: CharStats };
 export type EntityOut = CharStats;
 
 /// =========================================================

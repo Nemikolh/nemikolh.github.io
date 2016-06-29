@@ -1,4 +1,7 @@
+<scene></scene>
 <div class="container">
-  Hello {{name}}!
-  <button class="btn btn-primary">Bootstrap button</button>
-</div>
+  <button class="btn btn-primary" (click)="togglePhysics()">
+      <span *ngIf="isStop()">Stop</span>
+      <span *ngIf="!isStop()">Play</span>
+  </button>
+<div>
