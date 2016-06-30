@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Scene, Entity, Projectile} from '../models/scene';
+import {Scene, Projectile} from '../models/scene';
+import {Entity} from '../models/entity';
 import {SpellList} from '../models/spell_list';
 import {Spell} from './spec';
 

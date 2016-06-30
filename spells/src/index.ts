@@ -8,11 +8,13 @@ import {bootstrap} from '@angular/platform-browser-dynamic';
 import {provide} from '@angular/core';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import {App} from './app';
-import {PhysicsEngine} from './physics/engine';
+import {GameEngine} from './game/engine';
+import {SpellEngine} from './spells/engine';
 import {Scene} from './models/scene';
 
 bootstrap(App, [
   provide(LocationStrategy, { useClass: HashLocationStrategy }),
   Scene,
-  PhysicsEngine
+  GameEngine,
+  SpellEngine
 ]);

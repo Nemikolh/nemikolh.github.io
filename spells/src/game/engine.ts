@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Scene, Projectile, Entity} from '../models/scene';
+import {Scene, Projectile} from '../models/scene';
+import {Entity} from '../models/entity';
+import {Delta} from './delta';
 import {SpellEngine} from '../spells/engine';
 
 
 @Injectable()
-export class PhysicsEngine {
+export class GameEngine {
 
     private _loop: () => void = undefined;
     private loop_id: number = 0;
@@ -46,12 +48,18 @@ export class PhysicsEngine {
             projectile.x += projectile.speed.x * elapsed;
             projectile.y += projectile.speed.y * elapsed;
         }
+        // Collect deltas:
+        let deltas: Array<Delta> = [];
         for (let projectile of this.scene.projectiles) {
             for (let entity of this.scene.entities) {
                 if (this.collide(projectile, entity) && caster != entity) {
-                    this.spell_engine.onHit(caster, projectile, entity);
+                    let res = this.spell_engine.onHit(caster, projectile, entity);
+                    deltas.push(res as any);
                 }
             }
+        }
+        // Resolve deltas
+        for (let delta of deltas) {
         }
     }
 
