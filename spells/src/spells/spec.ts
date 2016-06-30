@@ -1,11 +1,11 @@
 
-export interface Spell {
+export interface SpellSpec {
   // Meta
   name?: string;
   uuid?: string;
   description?: string;
   // Properties
-  cost: number;
+  cost: number | SpellCost;
   definitions: {
     [spell_name: string]: SpellDef
   };
@@ -14,38 +14,70 @@ export interface Spell {
   on_cast_failure: SpellEffectFailure[];
 }
 
-export type SpellDef = (Projectile & {
-  on_hit: any;
-}) | (AOE & {
-  // TODO: AOE effects
-});
+/// =========================================================
+///                 Projectiles and AOEs
+///
+
+export type SpellDef = ProjectileWithScript | AOEWithScript;
 
 export interface Projectile {
-  direction: string | number;
-  speed: number;
-  range: number;
-  hitbox: Shape;
+    direction: string | number;
+    // In tiles / seconds
+    speed: number;
+    // In tiles
+    range: number;
+    hitbox: Shape;
+}
+
+export interface ProjectileWithScript extends Projectile {
+    on_hit: SpellEffectOnHit;
 }
 
 export interface AOE {
-  shape: Shape;
-  position: Position;
+    hitbox: Shape;
+    position: Position;
+}
+
+export interface AOEWithScript extends AOE {
+    // TODO
 }
 
 /// =========================================================
 ///                 Aariba Script part
 ///
 
+export interface SpellCost {
+    ($caster: EntityIn): number;
+}
+
 export interface SpellEffect {
-  (in_: {
-    $caster: EntityIn;
-    $interrupt: Interrupt;
-    $spell: SpellCtor;
-    $lycan: LycanIn;
-  }, out: {
-    $caster: EntityOut;
-    $lycan: LycanOut;
-  }): void;
+    (in_: {
+        $caster: EntityIn;
+        $interrupt: Interrupt;
+        $spells: {
+            [spell_name: string]: SpellCtor
+        };
+        $lycan: LycanIn;
+    }, out: {
+        $caster: EntityOut;
+        $lycan: LycanOut;
+    }): void;
+}
+
+export interface SpellEffectOnHit {
+    (in_: {
+        $caster: EntityIn;
+        $target: EntityIn;
+        $self: Projectile;
+        $spells: {
+            [spell_name: string]: SpellCtor
+        };
+        $lycan: LycanIn;
+    }, out: {
+        $caster: EntityOut;
+        $target: EntityOut;
+        $lycan: LycanOut;
+    }): void;
 }
 
 export interface SpellEffectFailure {
@@ -54,10 +86,8 @@ export interface SpellEffectFailure {
 
 export interface Interrupt { (): void; }
 
-export type SpellInstance = AOE | Projectile;
-
 export interface SpellCtor {
-  [spell_name: string]: SpellInstance;
+   (inherit_from: AOE | Projectile): AOE | Projectile;
 }
 
 /// =========================================================
@@ -65,17 +95,22 @@ export interface SpellCtor {
 ///
 
 export interface CharStats {
-  strength: number;
-  dexterity: number;
-  constitution: number;
-  intelligence: number;
-  precision: number;
-  wisdom: number;
-  level: number;
+    // Static stats
+    strength: number;
+    dexterity: number;
+    constitution: number;
+    intelligence: number;
+    precision: number;
+    wisdom: number;
+    level: number;
+    // Dynmaic stats
+    health: number;
 }
 
 export type EntityIn = CharStats & { current?: CharStats };
-export type EntityOut = CharStats;
+export type EntityOut = CharStats & {
+    damages: number;
+};
 
 /// =========================================================
 ///                 Lycan API
