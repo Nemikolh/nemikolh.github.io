@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Scene} from '../models/scene';
+import {Scene, Projectile, Entity} from '../models/scene';
+import {SpellEngine} from '../spells/engine';
+
 
 @Injectable()
 export class PhysicsEngine {
@@ -8,7 +10,7 @@ export class PhysicsEngine {
     private loop_id: number = 0;
     private last_time: number = 0;
 
-    constructor(private scene: Scene) {}
+    constructor(private scene: Scene, private spell_engine: SpellEngine) {}
 
     hasStarted() {
         return this._loop !== undefined;
@@ -35,13 +37,25 @@ export class PhysicsEngine {
     }
 
     private update(elapsed: number) {
+        let caster = this.scene.entities[0];
         for (let entity of this.scene.entities) {
             entity.x += entity.speed.x * elapsed;
             entity.y += entity.speed.y * elapsed;
         }
-        for (let particle of this.scene.projectiles) {
-            particle.x += particle.speed.x * elapsed;
-            particle.y += particle.speed.y * elapsed;
+        for (let projectile of this.scene.projectiles) {
+            projectile.x += projectile.speed.x * elapsed;
+            projectile.y += projectile.speed.y * elapsed;
         }
+        for (let projectile of this.scene.projectiles) {
+            for (let entity of this.scene.entities) {
+                if (this.collide(projectile, entity) && caster != entity) {
+                    this.spell_engine.onHit(caster, projectile, entity);
+                }
+            }
+        }
+    }
+
+    private collide(projectile: Projectile, entity: Entity): boolean {
+        return false;
     }
 }
