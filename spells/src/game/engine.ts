@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Scene, Projectile} from '../models/scene';
 import {Entity} from '../models/entity';
 import {Delta} from './delta';
-import {SpellEngine} from '../spells/engine';
+import {SpellEngine} from './spell_engine';
 
 
 @Injectable()
@@ -41,12 +41,12 @@ export class GameEngine {
     private update(elapsed: number) {
         let caster = this.scene.entities[0];
         for (let entity of this.scene.entities) {
-            entity.x += entity.speed.x * elapsed;
-            entity.y += entity.speed.y * elapsed;
+            entity.x += entity.speed.x * 16 * elapsed;
+            entity.y += entity.speed.y * 16 * elapsed;
         }
         for (let projectile of this.scene.projectiles) {
-            projectile.x += projectile.speed.x * elapsed;
-            projectile.y += projectile.speed.y * elapsed;
+            projectile.x += projectile.speed.x * 16 * elapsed;
+            projectile.y += projectile.speed.y * 16 * elapsed;
         }
         // Collect deltas:
         let deltas: Array<Delta> = [];
@@ -54,7 +54,8 @@ export class GameEngine {
             for (let entity of this.scene.entities) {
                 if (this.collide(projectile, entity) && caster != entity) {
                     let res = this.spell_engine.onHit(caster, projectile, entity);
-                    deltas.push(res as any);
+                    deltas.push(...res);
+                    break;
                 }
             }
         }

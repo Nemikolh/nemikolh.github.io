@@ -2,15 +2,13 @@ import {Injectable} from '@angular/core';
 import {Delta} from '../game/delta';
 import {Scene, Projectile} from '../models/scene';
 import {Entity} from '../models/entity';
-import {SpellList} from '../models/spell_list';
-import {Spell} from './spec';
+import {SpellList, Spell} from '../models/spell';
 
 
 @Injectable()
 export class SpellEngine {
 
     private active_spells: Spell[];
-    private
 
     constructor(private scene: Scene, private spell_list: SpellList) {}
 
@@ -18,7 +16,7 @@ export class SpellEngine {
         this.spell_list.spells.filter
     }
 
-    onHit(caster: Entity, projectile: Projectile, entity: Entity): Delta {
-
+    onHit(caster: Entity, projectile: Projectile, entity: Entity): Delta[] {
+        return null;
     }
 }

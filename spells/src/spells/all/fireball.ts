@@ -4,7 +4,7 @@ export const fireball: SpellSpec = {
     name: 'Fireball light',
     uuid: '1',
     description: `Launch a fireball in a specific direction
-                  that hits everything it touched`,
+                  that hits everything it touch`,
     cost: ($caster) => $caster.intelligence * 2 + 10,
     definitions: {
         'fireball': {
@@ -20,7 +20,7 @@ export const fireball: SpellSpec = {
             }
         }
     },
-    on_end_cast: null,
-    on_start_cast: null,
-    on_cast_failure: null
+    on_end_cast: [],
+    on_start_cast: [],
+    on_cast_failure: []
 };

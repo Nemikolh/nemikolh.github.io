@@ -28,7 +28,7 @@ export type AOE = Vec2 & Shape & HasId;
 export class Scene {
     projectiles: Projectile[] = [{
         x: 0, y: -100,
-        speed: {x: 0, y: 20},
+        speed: {x: 0, y: 2},
         id: 0
     }, {
         x: 100, y: 100,

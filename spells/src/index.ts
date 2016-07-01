@@ -9,9 +9,9 @@ import {provide} from '@angular/core';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import {App} from './app';
 import {GameEngine} from './game/engine';
-import {SpellEngine} from './spells/engine';
+import {SpellEngine} from './game/spell_engine';
 import {Scene} from './models/scene';
-import {SpellList} from './models/spell_list';
+import {SpellList} from './models/spell';
 
 bootstrap(App, [
   provide(LocationStrategy, { useClass: HashLocationStrategy }),
