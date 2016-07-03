@@ -1,8 +1,8 @@
 import {CharStats} from '../spells/spec';
-import {Vec2, HasId, HasSpeed} from './scene';
+import {Vec2, HasId, HasSpeed, Shape} from './scene';
 import * as _ from 'lodash';
 
-interface EntityProps extends Vec2, HasId, HasSpeed, CharStats {
+interface EntityProps extends Vec2, HasId, HasSpeed, CharStats, Shape {
     health: number;
 }
 
@@ -18,6 +18,8 @@ export class Entity implements EntityProps {
     intelligence: number = 5;
     precision: number = 5;
     level: number = 1;
+    w: number = 16;
+    h: number = 40;
 
     constructor(public id: number) {}
 
@@ -54,5 +56,7 @@ function copy_into(in_: EntityProps, out: EntityProps) {
     out.intelligence = in_.intelligence;
     out.precision = in_.precision;
     out.level = in_.level;
+    out.w = in_.w;
+    out.h = in_.h;
     return out;
 }
