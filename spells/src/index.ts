@@ -12,11 +12,14 @@ import {GameEngine} from './game/engine';
 import {SpellEngine} from './game/spell_engine';
 import {Scene} from './models/scene';
 import {SpellList} from './models/spell';
+import {SpellSpecList,SpellSpecService} from './spells/all/index.ts';
 
 bootstrap(App, [
   provide(LocationStrategy, { useClass: HashLocationStrategy }),
   Scene,
   GameEngine,
   SpellEngine,
-  SpellList
+  SpellList,
+  SpellSpecList,
+  SpellSpecService,
 ]);
