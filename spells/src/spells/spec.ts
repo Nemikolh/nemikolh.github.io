@@ -6,9 +6,7 @@ export interface SpellSpec {
   description?: string;
   // Properties
   cost: number | SpellCost;
-  definitions: {
-    [spell_name: string]: SpellDef
-  };
+  definitions: SpellDef;
   on_start_cast: SpellEffect[];
   on_end_cast: SpellEffect[];
   on_cast_failure: SpellEffectFailure[];
@@ -18,28 +16,31 @@ export interface SpellSpec {
 ///                 Projectiles and AOEs
 ///
 
-export type SpellDef = ProjectileWithScript | AOEWithScript;
+export interface SpellDef {
+  projectile: { [projectile_name: string]: ProjectileWithScript };
+  aoe: { [aoe_name: string]: AOEWithScript };
+}
 
 export interface Projectile {
-    direction: string | number;
-    // In tiles / seconds
-    speed: number;
-    // In tiles
-    range: number;
-    hitbox: Shape;
+  direction: string | number;
+  // In tiles / seconds
+  speed: number;
+  // In tiles
+  range: number;
+  hitbox: Shape;
 }
 
 export interface ProjectileWithScript extends Projectile {
-    on_hit: SpellEffectOnHit;
+  on_hit: SpellEffectOnHit;
 }
 
 export interface AOE {
-    hitbox: Shape;
-    position: Position;
+  hitbox: Shape;
+  position: Position;
 }
 
 export interface AOEWithScript extends AOE {
-    // TODO
+  // TODO
 }
 
 /// =========================================================
@@ -47,47 +48,67 @@ export interface AOEWithScript extends AOE {
 ///
 
 export interface SpellCost {
-    ($caster: EntityIn): number;
+  ($caster: EntityIn): number;
 }
 
 export interface SpellEffect {
-    (in_: {
-        $caster: EntityIn;
-        $interrupt: Interrupt;
-        $spells: {
-            [spell_name: string]: SpellCtor
-        };
-        $lycan: LycanIn;
-    }, out: {
-        $caster: EntityOut;
-        $lycan: LycanOut;
-    }): void;
+  (in_: {
+    $caster: EntityIn;
+    $interrupt: Interrupt;
+    $spell: SpellIn;
+    $lycan: LycanIn;
+  }, out: {
+    $caster: EntityOut;
+    $lycan: LycanOut;
+  }): void;
 }
 
 export interface SpellEffectOnHit {
-    (in_: {
-        $caster: EntityIn;
-        $target: EntityIn;
-        $self: Projectile;
-        $spells: {
-            [spell_name: string]: SpellCtor
-        };
-        $lycan: LycanIn;
-    }, out: {
-        $caster: EntityOut;
-        $target: EntityOut;
-        $lycan: LycanOut;
-    }): void;
+  (in_: {
+    $caster: EntitySnapshotIn;
+    $target: EntityIn;
+    $self: Projectile;
+    $spell: SpellIn;
+    $lycan: LycanIn;
+  }, out: {
+    $caster: EntitySnapshotOut;
+    $target: EntityOut;
+    $lycan: LycanOut;
+  }): void;
 }
 
+export interface SpellEffectOnEndRange {
+  (in_: {
+    $caster: EntitySnapshotIn;
+    $spells: SpellIn;
+    $self: Projectile;
+    $lycan: LycanIn;
+  }, out_: {
+    $caster: EntitySnapshotOut;
+    $lycan: LycanOut;
+  }): void;
+}
 export interface SpellEffectFailure {
   (in_: any, out: any): void;
 }
 
 export interface Interrupt { (): void; }
 
-export interface SpellCtor {
-   (inherit_from: AOE | Projectile): AOE | Projectile;
+export interface SpellIn {
+  projectile: { [projectile_name: string]: ProjectileCtor };
+  aoe: { [aoe_name: string]: AOECtor };
+}
+
+export interface ProjectileCtor {
+  // If present, inherits from the following properties
+  // * range
+  // XXX: Local storage probably
+  (inherit_from?: Projectile): Projectile;
+}
+
+export interface AOECtor {
+  // If present, inherits from ... what?
+  (inherit_from?: AOE): AOE;
 }
 
 /// =========================================================
@@ -95,22 +116,41 @@ export interface SpellCtor {
 ///
 
 export interface CharStats {
-    // Static stats
-    strength: number;
-    dexterity: number;
-    constitution: number;
-    intelligence: number;
-    precision: number;
-    wisdom: number;
-    level: number;
-    // Dynmaic stats
-    health: number;
+  // Static stats
+  strength: number;
+  dexterity: number;
+  constitution: number;
+  intelligence: number;
+  precision: number;
+  wisdom: number;
+  level: number;
+  // Dynamic stats
+  health: number;
 }
 
-export type EntityIn = CharStats & { current?: CharStats };
-export type EntityOut = CharStats & {
-    damages: number;
-};
+export interface EntityIn extends CharStats {
+  effects: any[];
+}
+
+export interface EntityOut {
+  damages: (number) => void;
+  effects: (any) => void;
+}
+
+// The fields of EntitySnapshotIn are the same as EntityIn, but
+// at a previous point in time
+// Current gives access to the current stats of the caster, if
+// he is still alive / hasn't left the map
+export interface EntitySnapshotIn extends EntityIn {
+  current?: EntityIn;
+}
+
+// EntitySnapshot is read-only, except for the `current` field
+// which can be used to act on the caster, if he is still alive
+// and hasn't left the map
+export interface EntitySnapshotOut {
+  current?: EntityOut;
+}
 
 /// =========================================================
 ///                 Lycan API
