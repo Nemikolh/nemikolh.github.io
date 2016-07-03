@@ -56,6 +56,9 @@ export class GameEngine {
                     console.log("Collision!");
                     let res = this.spell_engine.onHit(caster, projectile, entity);
                     deltas.push(...res);
+                    // Queue deletion until after we finish iterating?
+                    let index = this.scene.projectiles.indexOf(projectile);
+                    this.scene.projectiles.splice(index, 1);
                     break;
                 }
             }
