@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Scene, Projectile} from '../models/scene';
+import {Scene, Projectile, Shape, Vec2} from '../models/scene';
 import {Entity} from '../models/entity';
 import {Delta} from './delta';
 import {SpellEngine} from './spell_engine';
@@ -53,6 +53,7 @@ export class GameEngine {
         for (let projectile of this.scene.projectiles) {
             for (let entity of this.scene.entities) {
                 if (this.collide(projectile, entity) && caster != entity) {
+                    console.log("Collision!");
                     let res = this.spell_engine.onHit(caster, projectile, entity);
                     deltas.push(...res);
                     break;
@@ -64,7 +65,22 @@ export class GameEngine {
         }
     }
 
-    private collide(projectile: Projectile, entity: Entity): boolean {
-        return false;
+    private collide(a: Shape & Vec2, b: Shape & Vec2): boolean {
+        let a_left  = a.x - a.w / 2;
+        let a_right = a.x + a.w / 2;
+        let a_bot   = a.y - a.h / 2;
+        let a_top   = a.y + a.h / 2;
+        let b_left  = b.x - b.w / 2;
+        let b_right = b.x + b.w / 2;
+        let b_bot   = b.y - b.h / 2;
+        let b_top   = b.y + b.h / 2;
+
+        if (a_bot > b_top) { return false; }
+        if (a_top < b_bot) { return false; }
+
+        if (a_right < b_left)  { return false; }
+        if (a_left  > b_right) { return false; }
+
+        return true;
     }
 }
