@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 
 interface EntityProps extends Vec2, HasId, HasSpeed, CharStats, Shape {
     health: number;
+    mana: number;
+    effects: any[];
 }
 
 export class Entity implements EntityProps {
@@ -11,6 +13,7 @@ export class Entity implements EntityProps {
     y: number = 0;
     speed: Vec2 = {x: 0, y: 0};
     health: number;
+    mana: number;
     strength: number = 5;
     wisdom: number = 5;
     constitution: number = 5;
@@ -20,6 +23,7 @@ export class Entity implements EntityProps {
     level: number = 1;
     w: number = 16;
     h: number = 40;
+    effects: any[] = [];
 
     constructor(public id: number) {}
 
@@ -48,6 +52,7 @@ function copy_into(in_: EntityProps, out: EntityProps) {
     out.x = in_.x;
     out.y = in_.y;
     out.health = in_.health;
+    out.mana = in_.mana;
     out.speed = _.cloneDeep(in_.speed);
     out.strength = in_.strength;
     out.wisdom = in_.wisdom;
@@ -58,5 +63,6 @@ function copy_into(in_: EntityProps, out: EntityProps) {
     out.level = in_.level;
     out.w = in_.w;
     out.h = in_.h;
+    out.effects = in_.effects;
     return out;
 }

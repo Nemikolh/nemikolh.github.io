@@ -54,12 +54,12 @@ export interface SpellCost {
 export interface SpellEffect {
   (in_: {
     $caster: EntityIn;
-    $interrupt: Interrupt;
     $spell: SpellIn;
     $lycan: LycanIn;
   }, out: {
     $caster: EntityOut;
     $lycan: LycanOut;
+    $interrupt: Interrupt;
   }): void;
 }
 
@@ -103,12 +103,12 @@ export interface ProjectileCtor {
   // If present, inherits from the following properties
   // * range
   // XXX: Local storage probably
-  (inherit_from?: Projectile): Projectile;
+  (inherit_from?: Projectile): ProjectileWithScript;
 }
 
 export interface AOECtor {
   // If present, inherits from ... what?
-  (inherit_from?: AOE): AOE;
+  (inherit_from?: AOE): AOEWithScript;
 }
 
 /// =========================================================
@@ -165,7 +165,7 @@ export type LycanIn = Lycan & {
   effects: any[];
 };
 export type LycanOut = Lycan & {
-  spawn: (aoe_or_proj: Projectile | AOE) => void;
+  spawn: (aoe_or_proj: ProjectileWithScript | AOEWithScript) => void;
 };
 
 /// =========================================================

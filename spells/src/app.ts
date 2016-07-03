@@ -27,4 +27,8 @@ export class App {
             this.game.start();
         }
     }
+
+    castSpell() {
+        this.game.castSpell();
+    }
 }

@@ -26,19 +26,9 @@ export type AOE = Vec2 & Shape & HasId;
 
 @Injectable()
 export class Scene {
-    projectiles: Projectile[] = [{
-        x: 0, y: -100,
-        speed: {x: 0, y: 2},
-        w: 8,
-        h: 8,
-        id: 0
-    }, {
-        x: 100, y: 100,
-        speed: ZeroVec2,
-        w: 8,
-        h: 8,
-        id: 1
-    }];
+    private next_id: number = 2;
+    projectiles: Projectile[] = [];
+    
     aoes: AOE[] = [];
     entities: Entity[] = [entity({
         x: 0,
@@ -48,6 +38,7 @@ export class Scene {
         speed: ZeroVec2,
         id: 0,
         health: 100,
+        mana: 100,
         strength: 5,
         wisdom: 5,
         constitution: 5,
@@ -55,6 +46,7 @@ export class Scene {
         intelligence: 5,
         precision: 1,
         level: 1,
+        effects: [],
     }), entity({
         x: 0,
         y: 0,
@@ -63,6 +55,7 @@ export class Scene {
         speed: ZeroVec2,
         id: 1,
         health: 100,
+        mana: 100,
         strength: 3,
         wisdom: 3,
         constitution: 3,
@@ -70,6 +63,22 @@ export class Scene {
         intelligence: 4,
         precision: 2,
         level: 2,
+        effects: [],
     })
     ];
+
+    // TODO: Complete
+    spawn_projectile(projectile: Vec2 & HasSpeed): number {
+        let new_id = this.next_id++;
+        let new_projectile = {
+            x: projectile.x,
+            y: projectile.y,
+            speed: projectile.speed,
+            w: 8,
+            h: 8,
+            id: new_id,
+        };
+        this.projectiles.push(new_projectile);
+        return new_id;
+    }
 }

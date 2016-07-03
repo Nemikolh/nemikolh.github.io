@@ -38,6 +38,11 @@ export class GameEngine {
         this._loop = undefined;
     }
 
+    castSpell() {
+        let caster = this.scene.entities[0];
+        this.spell_engine.cast(caster);
+    }
+
     private update(elapsed: number) {
         let caster = this.scene.entities[0];
         for (let entity of this.scene.entities) {
@@ -54,7 +59,7 @@ export class GameEngine {
             for (let entity of this.scene.entities) {
                 if (this.collide(projectile, entity) && caster != entity) {
                     console.log("Collision!");
-                    let res = this.spell_engine.onHit(caster, projectile, entity);
+                    let res = this.spell_engine.onHit(projectile, entity);
                     deltas.push(...res);
                     // Queue deletion until after we finish iterating?
                     let index = this.scene.projectiles.indexOf(projectile);
