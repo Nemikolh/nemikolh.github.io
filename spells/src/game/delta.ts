@@ -1,8 +1,8 @@
-import {Projectile} from '../spells/spec';
+import {Projectile, AOE} from '../spells/spec';
 
 // I wish we had rust enums...
 // Only one of the following property will be there.
 export interface Delta {
-  remove_projectile?: string;
+  spawn_aoe?: AOE;
   spawn_projectile?: Projectile;
 }

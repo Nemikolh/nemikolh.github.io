@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-
-import {SpellSpec,SpellCost,ProjectileCtor,AOECtor,SpellEffect,
-    SpellEffectFailure} from '../spells/spec';
-import {ProjectileWithScript, AOEWithScript} from '../spells/spec';
-import {SpellSpecList} from '../spells/all/index.ts'
+import {SpellSpec, SpellCost, ProjectileCtor} from '../spells/spec';
+import {AOECtor, SpellEffect, SpellEffectFailure} from '../spells/spec';
+import {ProjectileDef, AOEDef} from '../spells/spec';
+import {SpellSpecList} from '../spells/all';
+import * as _ from 'lodash';
 
 
 /// This class parse a SpellSpec and converts it
@@ -34,12 +34,16 @@ export class Spell {
         let projectiles: { [name: string]: ProjectileCtor } = {};
         for (let name in spell.definitions.projectile) {
             projectiles[name] = (inherit_from) => {
-                let new_spell = spell.definitions.projectile[name];
+                let new_spell = this.buildProjectileFromDef(
+                    spell.definitions.projectile[name]
+                );
                 if (inherit_from) {
+                    if (inherit_from)
                     new_spell.range = inherit_from.range;
+                    new_spell.speed = inherit_from.speed;
                 }
                 return new_spell;
-            }
+            };
         }
         this.definitions = {
             projectile: projectiles,
@@ -49,15 +53,24 @@ export class Spell {
         this.on_end_cast = spell.on_end_cast;
         this.on_cast_failure = spell.on_cast_failure;
     }
+
+    private buildProjectileFromDef(proj_def: ProjectileDef) {
+        return new Projectile(
+            proj_def.direction,
+            proj_def.speed
+        )
+    }
 }
 
 /// Concrete projectile used by the engine stack.
 export class Projectile {
 
     // Current stats
-    direction: number;
-    speed: number;
-    range: number;
+    constructor(
+        public direction: number,
+        public speed: number,
+        public range: number
+    ) {}
 }
 
 @Injectable()

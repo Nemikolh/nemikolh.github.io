@@ -4,7 +4,6 @@
       <span *ngIf="isStop()">Stop</span>
       <span *ngIf="!isStop()">Play</span>
   </button>
-  <button class="btn btn-primary" (click)="castSpell()">
-      Cast
-  </button>
+  <button class="btn btn-primary" (click)="castSpell()">Cast</button>
+  <span>Last log entry: {{logger.log_entry}}</span>
 <div>

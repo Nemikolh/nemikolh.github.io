@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
+import {Logger} from './models/logger';
 import {SceneComp} from './renderer/scene';
 import {GameEngine} from './game/engine';
 
@@ -14,7 +15,7 @@ let appCss = require<any>('./app.scss');
 })
 export class App {
 
-    constructor(private game: GameEngine) {}
+    constructor(private game: GameEngine, private logger: Logger) {}
 
     isStop() {
         return this.game.hasStarted();

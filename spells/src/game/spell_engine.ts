@@ -1,50 +1,54 @@
 import {Injectable} from '@angular/core';
 import {Delta} from '../game/delta';
+import {Logger} from '../models/logger';
 import {Scene, Projectile, Vec2} from '../models/scene';
 import {Entity, EntitySnapshot} from '../models/entity';
 import {SpellList, Spell} from '../models/spell';
 import {SpellCost,ProjectileWithScript,AOEWithScript,SpellEffectOnHit, SpellEffect} from '../spells/spec.ts';
 
-function direction_and_speed_to_vec(direction: number|string, speed: number): Vec2 {
-    // TODO
-    return {
-        x: 0,
-        y: 2,
+interface LookupTable {
+    [id: string]: {
+        spell: Spell;
+        on_hit: SpellEffectOnHit;
+        caster: EntitySnapshot;
     };
 }
 
 @Injectable()
 export class SpellEngine {
-    private lookup_table: {
-        spell: Spell;
-        // XXX: Better way to know which projectile in the spell?
-        on_hit: SpellEffectOnHit;
-        caster: EntitySnapshot;
-    }[] = [];
+    private lookup_table: LookupTable = {};
 
-    constructor(private scene: Scene, private spell_list: SpellList) {}
+    constructor(
+        private logger: Logger,
+        private scene: Scene,
+        private spell_list: SpellList
+    ) {}
 
-    cast(caster: Entity) {
+    cast(caster: Entity): Delta[] {
         let to_cast = this.spell_list.selected_spell;
         let cost: number;
-        if (typeof to_cast.cost == "number") {
-            cost = <number> to_cast.cost;
+        if (typeof to_cast.cost == 'number') {
+            cost = to_cast.cost;
         } else {
-            let cost_func = <SpellCost> to_cast.cost;
-            cost = cost_func(caster);
+            cost = to_cast.cost(caster);
         }
         if (caster.mana >= cost) {
             caster.mana -= cost;
             // TODO: Switch to on_start_cast, and start timer to on_end_cast
-            this.castSpellEffects(caster.clone(), to_cast, to_cast.on_end_cast);
+            return this.castSpellEffects(
+                caster.clone(),
+                to_cast,
+                to_cast.on_end_cast
+            );
         } else {
-            console.log("No mana!");
+            return [];
         }
     }
 
     onHit(projectile: Projectile, target: Entity): Delta[] {
         let id = projectile.id;
         let spell = this.lookup_table[id];
+        let deltas: Delta[] = [];
         if (spell) {
             let lycan = new Lycan();
             let in_ = {
@@ -63,16 +67,20 @@ export class SpellEngine {
             out.$target.finalize(target);
             out.$caster.current.finalize(spell.caster.current);
             this.spawnProjectiles(spell.caster, spell.spell, out.$lycan.new_projectiles);
-            // TODO: Do better, or the array will only grow
             delete this.lookup_table[id];
         } else {
-            console.log("Error: no effects in the lookup table");
+            this.logger.log('Error: no effects in the lookup table');
         }
 
-        return null;
+        return deltas;
     }
 
-    private castSpellEffects(caster: EntitySnapshot, spell: Spell, effects: SpellEffect[]) {
+    private castSpellEffects(
+        caster: EntitySnapshot,
+        spell: Spell,
+        effects: SpellEffect[]
+    ): Delta[] {
+        let deltas: Delta[] = [];
         for (let effect of effects) {
             let interrupt = false;
             let lycan = new Lycan();
@@ -88,26 +96,28 @@ export class SpellEngine {
             };
             effect(in_, out);
             caster.health -= out.$caster.total_damages;
-            this.spawnProjectiles(caster, spell, out.$lycan.new_projectiles);
+            deltas.push(
+                ...lycan.new_projectiles.map(
+                    partial_proj => ({
+                        x: caster.x,
+                        y: caster.y,
+                        speed: this.dir_and_speed_to_vec(
+                            partial_proj.direction,
+                            partial_proj.speed
+                        )
+                    })
+                )
+            );
             if (interrupt) { break; }
         }
+        return deltas;
     }
 
-    private spawnProjectiles(caster: EntitySnapshot, spell: Spell, projectiles: ProjectileWithScript[]) {
-        for (let projectile of projectiles) {
-            console.log("spawnProjectiles: x " + caster.x + " y " + caster.y);
-            let p = {
-                x: caster.x,
-                y: caster.y,
-                speed: direction_and_speed_to_vec(projectile.direction, projectile.speed),
-            };
-            let id = this.scene.spawn_projectile(p);
-            this.lookup_table[id] = {
-                caster: caster,
-                on_hit: projectile.on_hit,
-                spell: spell,
-            };
-        }
+    private dir_and_speed_to_vec(direction: number, speed: number): Vec2 {
+        return {
+            x: speed * 16 * Math.cos(direction),
+            y: speed * 16 * Math.sin(direction),
+        };
     }
 }
 

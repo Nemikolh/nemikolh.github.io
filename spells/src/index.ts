@@ -12,7 +12,8 @@ import {GameEngine} from './game/engine';
 import {SpellEngine} from './game/spell_engine';
 import {Scene} from './models/scene';
 import {SpellList} from './models/spell';
-import {SpellSpecList,SpellSpecService} from './spells/all/index.ts';
+import {SpellSpecList} from './spells/all';
+import {Logger} from './models/logger';
 
 bootstrap(App, [
   provide(LocationStrategy, { useClass: HashLocationStrategy }),
@@ -21,5 +22,5 @@ bootstrap(App, [
   SpellEngine,
   SpellList,
   SpellSpecList,
-  SpellSpecService,
+  Logger
 ]);

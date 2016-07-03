@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Scene, Projectile, Shape, Vec2} from '../models/scene';
-import {Entity} from '../models/entity';
+import {Logger} from '../models/logger';
+import {Scene, Shape, Vec2} from '../models/scene';
 import {Delta} from './delta';
 import {SpellEngine} from './spell_engine';
 
@@ -12,7 +12,7 @@ export class GameEngine {
     private loop_id: number = 0;
     private last_time: number = 0;
 
-    constructor(private scene: Scene, private spell_engine: SpellEngine) {}
+    constructor(private logger: Logger, private scene: Scene, private spell_engine: SpellEngine) {}
 
     hasStarted() {
         return this._loop !== undefined;
@@ -40,7 +40,8 @@ export class GameEngine {
 
     castSpell() {
         let caster = this.scene.entities[0];
-        this.spell_engine.cast(caster);
+        let deltas = this.spell_engine.cast(caster);
+        this.process_deltas(deltas);
     }
 
     private update(elapsed: number) {
@@ -58,18 +59,36 @@ export class GameEngine {
         for (let projectile of this.scene.projectiles) {
             for (let entity of this.scene.entities) {
                 if (this.collide(projectile, entity) && caster != entity) {
-                    console.log("Collision!");
+                    this.logger.log('Collision!');
                     let res = this.spell_engine.onHit(projectile, entity);
                     deltas.push(...res);
-                    // Queue deletion until after we finish iterating?
-                    let index = this.scene.projectiles.indexOf(projectile);
-                    this.scene.projectiles.splice(index, 1);
                     break;
                 }
             }
         }
         // Resolve deltas
+        this.process_deltas(deltas);
+    }
+
+
+    private spawnProjectiles(caster: EntitySnapshot, spell: Spell, projectiles: ProjectileWithScript[]) {
+        for (let projectile of projectiles) {
+            this.logger.log(`spawnProjectiles: x ${caster.x} y ${caster.y}`);
+            let p = ;
+            let id = this.scene.spawn_projectile(p);
+            this.lookup_table[id] = {
+                caster: caster,
+                on_hit: projectile.on_hit,
+                spell: spell,
+            };
+        }
+    }
+
+    private process_deltas(deltas: Delta[]) {
         for (let delta of deltas) {
+            // Queue deletion until after we finish iterating?
+            let index = this.scene.projectiles.indexOf(delta.spawn_projectile);
+            this.scene.projectiles.splice(index, 1);
         }
     }
 
