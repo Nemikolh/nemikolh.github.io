@@ -55,5 +55,21 @@ export class Scene {
         intelligence: 5,
         precision: 1,
         level: 1,
-    })];
+    }), entity({
+        x: 0,
+        y: 0,
+        w: 16,
+        h: 40,
+        speed: ZeroVec2,
+        id: 1,
+        health: 100,
+        strength: 3,
+        wisdom: 3,
+        constitution: 3,
+        dexterity: 10,
+        intelligence: 4,
+        precision: 2,
+        level: 2,
+    })
+    ];
 }
