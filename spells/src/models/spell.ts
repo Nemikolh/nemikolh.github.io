@@ -68,16 +68,16 @@ export class Spell {
 
     private sizebox(shape: Shape): { w: number, h:number } {
         if ((shape as Disc).disc) {
-            shape = shape as Disc;
+            let d = shape as Disc;
             return {
-                w: shape.disc.radius,
-                h: shape.disc.radius,
+                w: d.disc.radius,
+                h: d.disc.radius,
             };
         } else {
-            shape = shape as Square;
+            let s = shape as Square;
             return {
-                w: shape.square.side,
-                h: shape.square.side,
+                w: s.square.side,
+                h: s.square.side,
             };
         }
     }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Logger} from '../models/logger';
-import {Scene, Shape, Vec2} from '../models/scene';
+import {Scene, Vec2, BoundingBox} from '../models/scene';
 import {Delta} from './delta';
 import {SpellEngine} from './spell_engine';
 
@@ -71,32 +71,17 @@ export class GameEngine {
         this.process_deltas(deltas);
     }
 
-
-    private spawnProjectiles(caster: EntitySnapshot, spell: Spell, projectiles: ProjectileWithScript[]) {
-        for (let projectile of projectiles) {
-            this.logger.log(`spawnProjectiles: x ${caster.x} y ${caster.y}`);
-            let p = ;
-            let id = this.scene.spawn_projectile(p);
-            this.lookup_table[id] = {
-                caster: caster,
-                on_hit: projectile.on_hit,
-                spell: spell,
-            };
-        }
-    }
-
     private process_deltas(deltas: Delta[]) {
         for (let delta of deltas) {
             if (delta.spawn_projectile) {
-                let index = this.scene.projectiles.indexOf(delta.spawn_projectile);
-                this.scene.projectiles.splice(index, 1);
+                this.scene.projectiles.push(delta.spawn_projectile);
             } else if (delta.spawn_aoe) {
                 // TODO: Spawn aoe
             }
         }
     }
 
-    private collide(a: Shape & Vec2, b: Shape & Vec2): boolean {
+    private collide(a: BoundingBox & Vec2, b: BoundingBox & Vec2): boolean {
         let a_left  = a.x - a.w / 2;
         let a_right = a.x + a.w / 2;
         let a_bot   = a.y - a.h / 2;

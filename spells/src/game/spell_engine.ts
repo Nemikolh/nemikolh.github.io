@@ -5,7 +5,7 @@ import {Scene} from '../models/scene';
 import {Projectile, Spell} from '../models/spell';
 import {Entity, EntitySnapshot} from '../models/entity';
 import {SpellSpecList} from '../spells/all';
-import {SpellEffect} from '../spells/spec';
+import {SpellEffect, SpellCost} from '../spells/spec';
 
 @Injectable()
 export class SpellEngine {
@@ -22,9 +22,9 @@ export class SpellEngine {
         // No need to add any cast, TypeScript do control flow typing
         // and thus now what need to be casted to what
         if (typeof to_cast.cost == 'number') {
-            cost = to_cast.cost;
+            cost = to_cast.cost as number;
         } else {
-            cost = to_cast.cost(caster);
+            cost = (to_cast.cost as SpellCost)(caster);
         }
         if (caster.mana >= cost) {
             caster.mana -= cost;
@@ -57,7 +57,7 @@ export class SpellEngine {
         };
         projectile.on_hit(in_, out);
         out.$target.finalize(target);
-        out.$caster.current.finalize(spell.caster.current);
+        out.$caster.current.finalize(spell.caster);
         // Collect all projectiles
         deltas.push(...lycan.new_projectiles.map(proj => ({
             spawn_projectile: proj
