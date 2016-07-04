@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Projectile, AOE} from './spell';
 import {entity, Entity} from './entity';
 
 export interface Vec2 {
@@ -6,23 +7,16 @@ export interface Vec2 {
     y: number;
 }
 
-export interface HasId {
-    id: number;
-}
-
 export interface HasSpeed {
     speed: Vec2;
 }
 
-export interface Shape {
+export interface BoundingBox {
     w: number;
     h: number;
 }
 
 export const ZeroVec2: Vec2 = {x: 0, y: 0};
-
-export type Projectile = Vec2 & HasSpeed & HasId & Shape;
-export type AOE = Vec2 & Shape & HasId;
 
 @Injectable()
 export class Scene {
@@ -35,7 +29,6 @@ export class Scene {
         w: 16,
         h: 40,
         speed: ZeroVec2,
-        id: 0,
         health: 100,
         mana: 100,
         strength: 5,
@@ -52,7 +45,6 @@ export class Scene {
         w: 16,
         h: 40,
         speed: ZeroVec2,
-        id: 1,
         health: 100,
         mana: 100,
         strength: 3,

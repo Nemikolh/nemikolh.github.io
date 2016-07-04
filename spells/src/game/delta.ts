@@ -1,4 +1,4 @@
-import {Projectile, AOE} from '../spells/spec';
+import {Projectile, AOE} from '../models/spell';
 
 // I wish we had rust enums...
 // Only one of the following property will be there.

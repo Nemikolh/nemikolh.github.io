@@ -1,8 +1,8 @@
 import {CharStats} from '../spells/spec';
-import {Vec2, HasId, HasSpeed, Shape} from './scene';
+import {Vec2, HasSpeed, BoundingBox} from './scene';
 import * as _ from 'lodash';
 
-interface EntityProps extends Vec2, HasId, HasSpeed, CharStats, Shape {
+interface EntityProps extends Vec2, HasSpeed, CharStats, BoundingBox {
     health: number;
     mana: number;
     effects: any[];
@@ -25,7 +25,7 @@ export class Entity implements EntityProps {
     h: number = 40;
     effects: any[] = [];
 
-    constructor(public id: number) {}
+    constructor() {}
 
     clone(): EntitySnapshot {
         let a: EntitySnapshot = {
@@ -41,14 +41,13 @@ export interface EntitySnapshot extends EntityProps {
 }
 
 export function entity(props: EntityProps): Entity {
-    let e = new Entity(props.id);
+    let e = new Entity();
     copy_into(props, e);
     return e;
 }
 
 /// TODO: could be replace with a simple _.cloneDeep?
 function copy_into(in_: EntityProps, out: EntityProps) {
-    out.id = in_.id;
     out.x = in_.x;
     out.y = in_.y;
     out.health = in_.health;

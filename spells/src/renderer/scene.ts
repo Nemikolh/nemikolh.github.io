@@ -55,17 +55,17 @@ export class SceneComp {
         // Draw AOE:
         ctx.fillStyle = 'blue';
         for (let aoe of this.scene.aoes) {
-            ctx.fillRect(aoe.x - aoe.w / 2, aoe.y - aoe.h / 2, aoe.w, aoe.h);
+            ctx.fillRect(aoe.x, aoe.y, aoe.w, aoe.h);
         }
         // Draw entities
         ctx.fillStyle = 'green';
         for (let entity of this.scene.entities) {
-            ctx.fillRect(entity.x - entity.w / 2, entity.y - entity.h / 2, entity.w, entity.h);
+            ctx.fillRect(entity.x, entity.y, entity.w, entity.h);
         }
         // Draw projectiles
         ctx.fillStyle = 'red';
         for (let particle of this.scene.projectiles) {
-            ctx.fillRect(particle.x - particle.w / 2, particle.y - particle.h / 2, particle.w, particle.h);
+            ctx.fillRect(particle.x, particle.y, particle.w, particle.h);
         }
     }
 }

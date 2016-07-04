@@ -30,6 +30,8 @@ export interface ProjectileDef {
     hitbox: Shape;
 }
 
+export interface ProjectileInternal {}
+
 // Kept in sync with previous (plus minor differences):
 // Give the possibility to define only partially some properties
 export interface ProjectilePartialDef {
@@ -58,6 +60,8 @@ export interface AOEPartialDef {
 export interface AOEWithScript extends AOEDef {
     // TODO
 }
+
+export interface AOEInternal {}
 
 /// =========================================================
 ///                 Aariba Script part
@@ -116,11 +120,17 @@ export interface SpellIn {
 }
 
 export interface ProjectileCtor {
-    (inherit_from?: ProjectilePartialDef): ProjectileWithScript;
+    // Please do not change this:
+    // It is to remember that this type is partially hidden
+    // to the script
+    (inherit_from?: ProjectilePartialDef | ProjectileInternal): ProjectileInternal;
 }
 
 export interface AOECtor {
-    (inherit_from?: AOEPartialDef): AOEWithScript;
+    // Please do not change this:
+    // It is to remember that this type is partially hidden
+    // to the script
+    (inherit_from?: AOEPartialDef | AOEInternal): AOEInternal;
 }
 
 /// =========================================================
@@ -145,7 +155,7 @@ export interface EntityIn extends CharStats {
 }
 
 export interface EntityOut {
-    damages: (number) => void;
+    damages: number;
     effects: (any) => void;
 }
 
@@ -177,7 +187,7 @@ export type LycanIn = Lycan & {
     effects: any[];
 };
 export type LycanOut = Lycan & {
-    spawn: (aoe_or_proj: ProjectileWithScript | AOEWithScript) => void;
+    spawn: (aoe_or_proj: ProjectileInternal | AOEInternal) => void;
 };
 
 /// =========================================================
@@ -189,8 +199,12 @@ export interface Position {
     y: number;
 }
 
-export type Shape = {
-    disc: { radius: number }
-} | {
-    square: { side: number }
+export interface Disc {
+    disc: { radius: number };
 }
+
+export interface Square {
+    square: { side: number };
+}
+
+export type Shape = Disc | Square;

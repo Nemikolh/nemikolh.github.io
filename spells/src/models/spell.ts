@@ -1,19 +1,19 @@
-import {Injectable} from '@angular/core';
 import {SpellSpec, SpellCost, ProjectileCtor} from '../spells/spec';
 import {AOECtor, SpellEffect, SpellEffectFailure} from '../spells/spec';
-import {ProjectileDef, AOEDef} from '../spells/spec';
-import {SpellSpecList} from '../spells/all';
-import * as _ from 'lodash';
+import {ProjectileDef} from '../spells/spec';
+import {Shape, Square, Disc} from '../spells/spec';
+import {SpellEffectOnHit} from '../spells/spec';
+import {Vec2, HasSpeed, BoundingBox} from './scene';
+import {Entity} from './entity';
 
 
 /// This class parse a SpellSpec and converts it
 /// into an internal Spell object that can be used
 /// by the game engine.
 export class Spell {
-    // Meta
+    // Short Meta (no need for everything)
+    // won't be used anyway
     name: string;
-    uuid: string;
-    description: string;
     // Properties
     cost: number | SpellCost;
     definitions: {
@@ -24,24 +24,29 @@ export class Spell {
     on_end_cast: SpellEffect[];
     on_cast_failure: SpellEffectFailure[];
 
-    constructor(spell: SpellSpec) {
-        // XXX: What happens if any of those 3 are undefined?
+    constructor(spell: SpellSpec, public caster: Entity) {
         this.name = spell.name;
-        this.uuid = spell.uuid;
-        this.description = spell.description;
 
         this.cost = spell.cost;
         let projectiles: { [name: string]: ProjectileCtor } = {};
         for (let name in spell.definitions.projectile) {
+            let projectile_def = spell.definitions.projectile[name];
             projectiles[name] = (inherit_from) => {
-                let new_spell = this.buildProjectileFromDef(
-                    spell.definitions.projectile[name]
-                );
+                let new_spell: Projectile;
                 if (inherit_from) {
-                    if (inherit_from)
-                    new_spell.range = inherit_from.range;
-                    new_spell.speed = inherit_from.speed;
+                    if (inherit_from instanceof Projectile) {
+                        // Weird, we should not need that line...
+                        let old_proj = inherit_from as Projectile;
+                        new_spell.x = old_proj.x;
+                        new_spell.range = old_proj.range;
+                    }
+                } else {
+                    new_spell = this.buildProjectileFromDef(
+                        this.caster,
+                        spell.definitions.projectile[name]
+                   );
                 }
+                new_spell.on_hit = projectile_def.on_hit;
                 return new_spell;
             };
         }
@@ -54,35 +59,60 @@ export class Spell {
         this.on_cast_failure = spell.on_cast_failure;
     }
 
-    private buildProjectileFromDef(proj_def: ProjectileDef) {
+    private dir_and_speed_to_vec(direction: number, speed: number): Vec2 {
+        return {
+            x: speed * 16 * Math.cos(direction),
+            y: speed * 16 * Math.sin(direction),
+        };
+    }
+
+    private sizebox(shape: Shape): { w: number, h:number } {
+        if ((shape as Disc).disc) {
+            shape = shape as Disc;
+            return {
+                w: shape.disc.radius,
+                h: shape.disc.radius,
+            };
+        } else {
+            shape = shape as Square;
+            return {
+                w: shape.square.side,
+                h: shape.square.side,
+            };
+        }
+    }
+
+    private buildProjectileFromDef(caster: Entity, proj_def: ProjectileDef): Projectile {
+        let speed = this.dir_and_speed_to_vec(proj_def.direction, proj_def.speed);
+        let size = this.sizebox(proj_def.hitbox);
         return new Projectile(
-            proj_def.direction,
-            proj_def.speed
-        )
+            speed,
+            caster.x,
+            caster.y,
+            proj_def.range,
+            size.w,
+            size.h,
+            this
+        );
     }
 }
 
 /// Concrete projectile used by the engine stack.
-export class Projectile {
+export class Projectile implements Vec2, HasSpeed, BoundingBox {
 
     // Current stats
     constructor(
-        public direction: number,
-        public speed: number,
-        public range: number
+        public speed: Vec2,
+        public x: number,
+        public y: number,
+        public range: number,
+        public w: number,
+        public h: number,
+        public spell: Spell
     ) {}
+
+    on_hit: SpellEffectOnHit;
 }
 
-@Injectable()
-export class SpellList {
-
-    spells: Spell[] = [];
-    selected_spell: Spell;
-
-    constructor(spellList: SpellSpecList) {
-      for (let spell of spellList.spells) {
-        this.spells.push(new Spell(spell));
-      }
-      this.selected_spell = this.spells[0];
-    }
-}
+// TODO: Turn into a concrete class (similar to Projectile)
+export type AOE = Vec2 & BoundingBox;

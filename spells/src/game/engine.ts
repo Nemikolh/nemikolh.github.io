@@ -59,13 +59,14 @@ export class GameEngine {
         for (let projectile of this.scene.projectiles) {
             for (let entity of this.scene.entities) {
                 if (this.collide(projectile, entity) && caster != entity) {
-                    this.logger.log('Collision!');
                     let res = this.spell_engine.onHit(projectile, entity);
                     deltas.push(...res);
                     break;
                 }
             }
         }
+        // Clear all projectiles
+        this.scene.projectiles = [];
         // Resolve deltas
         this.process_deltas(deltas);
     }
@@ -86,9 +87,12 @@ export class GameEngine {
 
     private process_deltas(deltas: Delta[]) {
         for (let delta of deltas) {
-            // Queue deletion until after we finish iterating?
-            let index = this.scene.projectiles.indexOf(delta.spawn_projectile);
-            this.scene.projectiles.splice(index, 1);
+            if (delta.spawn_projectile) {
+                let index = this.scene.projectiles.indexOf(delta.spawn_projectile);
+                this.scene.projectiles.splice(index, 1);
+            } else if (delta.spawn_aoe) {
+                // TODO: Spawn aoe
+            }
         }
     }
 

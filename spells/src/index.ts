@@ -11,7 +11,6 @@ import {App} from './app';
 import {GameEngine} from './game/engine';
 import {SpellEngine} from './game/spell_engine';
 import {Scene} from './models/scene';
-import {SpellList} from './models/spell';
 import {SpellSpecList} from './spells/all';
 import {Logger} from './models/logger';
 
@@ -20,7 +19,6 @@ bootstrap(App, [
   Scene,
   GameEngine,
   SpellEngine,
-  SpellList,
   SpellSpecList,
   Logger
 ]);
