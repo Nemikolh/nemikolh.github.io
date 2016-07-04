@@ -46,7 +46,6 @@ export class GameEngine {
     }
 
     private update(elapsed: number) {
-        let caster = this.scene.entities[0];
         for (let entity of this.scene.entities) {
             entity.x += entity.speed.x * elapsed;
             entity.y += entity.speed.y * elapsed;
