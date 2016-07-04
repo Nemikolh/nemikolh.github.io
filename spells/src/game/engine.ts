@@ -92,20 +92,12 @@ export class GameEngine {
     }
 
     private collide(a: BoundingBox & Vec2, b: BoundingBox & Vec2): boolean {
-        let a_left  = a.x - a.w / 2;
-        let a_right = a.x + a.w / 2;
-        let a_bot   = a.y - a.h / 2;
-        let a_top   = a.y + a.h / 2;
-        let b_left  = b.x - b.w / 2;
-        let b_right = b.x + b.w / 2;
-        let b_bot   = b.y - b.h / 2;
-        let b_top   = b.y + b.h / 2;
 
-        if (a_bot > b_top) { return false; }
-        if (a_top < b_bot) { return false; }
+        if (a.x > b.x + b.w) { return false; }
+        if (a.x + a.w < b.x) { return false; }
 
-        if (a_right < b_left)  { return false; }
-        if (a_left  > b_right) { return false; }
+        if (a.y > b.y + b.h)  { return false; }
+        if (a.y + a.h < b.y) { return false; }
 
         return true;
     }
