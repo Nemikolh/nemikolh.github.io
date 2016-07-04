@@ -1,6 +1,6 @@
 import {SpellSpec, SpellCost, ProjectileCtor} from '../spells/spec';
 import {AOECtor, SpellEffect, SpellEffectFailure} from '../spells/spec';
-import {ProjectileDef} from '../spells/spec';
+import {ProjectileDef, ProjectileInternal} from '../spells/spec';
 import {Shape, Square, Disc} from '../spells/spec';
 import {SpellEffectOnHit} from '../spells/spec';
 import {Vec2, HasSpeed, BoundingBox} from './scene';
@@ -115,7 +115,7 @@ export class Spell {
 }
 
 /// Concrete projectile used by the engine stack.
-export class Projectile implements Vec2, HasSpeed, BoundingBox {
+export class Projectile implements Vec2, HasSpeed, BoundingBox, ProjectileInternal {
 
     // Current stats
     constructor(
