@@ -21,6 +21,10 @@ export class App {
         return this.game.hasStarted();
     }
 
+    logEntry(): string {
+        return this.logger.last_log;
+    }
+
     togglePhysics() {
         if (this.game.hasStarted()) {
             this.game.stop();

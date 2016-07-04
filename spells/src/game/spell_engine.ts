@@ -28,6 +28,7 @@ export class SpellEngine {
         }
         if (caster.mana >= cost) {
             caster.mana -= cost;
+            this.logger.log(`Casting spell! ${to_cast.name}`);
             // TODO: Switch to on_start_cast, and start timer to on_end_cast
             return this.castSpellEffects(
                 caster.clone(),
