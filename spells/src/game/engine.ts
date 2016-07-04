@@ -47,12 +47,12 @@ export class GameEngine {
     private update(elapsed: number) {
         let caster = this.scene.entities[0];
         for (let entity of this.scene.entities) {
-            entity.x += entity.speed.x * 16 * elapsed;
-            entity.y += entity.speed.y * 16 * elapsed;
+            entity.x += entity.speed.x * elapsed;
+            entity.y += entity.speed.y * elapsed;
         }
         for (let projectile of this.scene.projectiles) {
-            projectile.x += projectile.speed.x * 16 * elapsed;
-            projectile.y += projectile.speed.y * 16 * elapsed;
+            projectile.x += projectile.speed.x * elapsed;
+            projectile.y += projectile.speed.y * elapsed;
         }
         // Collect deltas:
         let deltas: Array<Delta> = [];

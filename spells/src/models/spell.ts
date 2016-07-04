@@ -87,14 +87,14 @@ export class Spell {
         if ((shape as Disc).disc) {
             let d = shape as Disc;
             return {
-                w: d.disc.radius,
-                h: d.disc.radius,
+                w: d.disc.radius * 16,
+                h: d.disc.radius * 16,
             };
         } else {
             let s = shape as Square;
             return {
-                w: s.square.side,
-                h: s.square.side,
+                w: s.square.side * 16,
+                h: s.square.side * 16,
             };
         }
     }
