@@ -42,7 +42,7 @@ export class SpellEngine {
     onHit(projectile: Projectile, target: Entity): Delta[] {
         let spell = projectile.spell;
         let deltas: Delta[] = [];
-        let lycan = new Lycan();
+        let lycan = new Lycan([...projectile.ignore_those, target]);
         let in_ = {
             $caster: spell.caster,
             $target: target,
@@ -73,7 +73,7 @@ export class SpellEngine {
         let deltas: Delta[] = [];
         for (let effect of effects) {
             let interrupt = false;
-            let lycan = new Lycan();
+            let lycan = new Lycan([caster.current]);
             let in_ = {
                 $caster: caster,
                 $spell: spell.definitions,
@@ -99,7 +99,10 @@ class Lycan {
     effects: any[] = [];
     new_projectiles: Projectile[] = [];
 
+    constructor(private ignore_those: Entity[]) {}
+
     spawn(proj: Projectile) {
+        proj.ignore_those.push(...this.ignore_those);
         this.new_projectiles.push(proj);
     }
 }

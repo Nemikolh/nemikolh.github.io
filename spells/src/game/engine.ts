@@ -58,7 +58,7 @@ export class GameEngine {
         let deltas: Array<Delta> = [];
         for (let projectile of this.scene.projectiles) {
             for (let entity of this.scene.entities) {
-                if (this.collide(projectile, entity) && caster != entity) {
+                if (this.collide(projectile, entity) && projectile.canCollideWith(entity)) {
                     let res = this.spell_engine.onHit(projectile, entity);
                     deltas.push(...res);
                     break;

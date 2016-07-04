@@ -129,6 +129,11 @@ export class Projectile implements Vec2, HasSpeed, BoundingBox, ProjectileIntern
     ) {}
 
     on_hit: SpellEffectOnHit;
+    ignore_those: Entity[] = [];
+
+    canCollideWith(entity: Entity): boolean {
+        return this.ignore_those.indexOf(entity) !== -1;
+    }
 }
 
 // TODO: Turn into a concrete class (similar to Projectile)

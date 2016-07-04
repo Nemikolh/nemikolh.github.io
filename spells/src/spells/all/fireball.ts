@@ -7,7 +7,7 @@ export const fireball: SpellSpec = {
                   that hits everything it touch`,
     cost: ($caster) => $caster.intelligence * 2 + 10,
     definitions: {
-        'projectile': {
+        projectile: {
             'fireball': {
                 direction: 0,
                 speed: 1.5,
@@ -21,7 +21,7 @@ export const fireball: SpellSpec = {
                 }
             }
         },
-        'aoe': {}
+        aoe: {}
     },
     on_end_cast: [
         (in_, out) => {
