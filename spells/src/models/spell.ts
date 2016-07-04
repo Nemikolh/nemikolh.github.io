@@ -34,11 +34,28 @@ export class Spell {
             projectiles[name] = (inherit_from) => {
                 let new_spell: Projectile;
                 if (inherit_from) {
+                    // ProjectileInternal
                     if (inherit_from instanceof Projectile) {
                         // Weird, we should not need that line...
-                        let old_proj = inherit_from as Projectile;
-                        new_spell.x = old_proj.x;
-                        new_spell.range = old_proj.range;
+                        new_spell = inherit_from as Projectile;
+                    } else {
+                        let old_spell = inherit_from as ProjectileDef;
+                        new_spell = this.buildProjectileFromDef(
+                            this.caster,
+                            spell.definitions.projectile[name]
+                       );
+                       new_spell.speed = this.dir_and_speed_to_vec(
+                           old_spell.direction || projectile_def.direction,
+                           old_spell.speed || projectile_def.speed
+                       );
+                       if (old_spell.range) {
+                           new_spell.range = old_spell.range;
+                       }
+                       if (old_spell.hitbox) {
+                           let {w, h} = this.sizebox(old_spell.hitbox);
+                           new_spell.w = w;
+                           new_spell.h = h;
+                       }
                     }
                 } else {
                     new_spell = this.buildProjectileFromDef(
