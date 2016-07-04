@@ -25,7 +25,7 @@ export class Entity implements EntityProps {
     h: number = 40;
     effects: any[] = [];
 
-    constructor() {}
+    constructor(public name: string) {}
 
     clone(): EntitySnapshot {
         let a: EntitySnapshot = {
@@ -40,8 +40,8 @@ export interface EntitySnapshot extends EntityProps {
     current?: Entity;
 }
 
-export function entity(props: EntityProps): Entity {
-    let e = new Entity();
+export function entity(props: EntityProps, name: string): Entity {
+    let e = new Entity(name);
     copy_into(props, e);
     return e;
 }

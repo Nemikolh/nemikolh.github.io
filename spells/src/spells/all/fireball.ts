@@ -9,8 +9,8 @@ export const fireball: SpellSpec = {
     definitions: {
         projectile: {
             'fireball': {
-                direction: - Math.PI / 2,
-                speed: 0.5,
+                direction: Math.PI / 2,
+                speed: 1.5,
                 range: 8,
                 hitbox: {
                     disc: { radius: 0.5 }

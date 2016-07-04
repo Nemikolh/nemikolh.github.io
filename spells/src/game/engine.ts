@@ -3,6 +3,7 @@ import {Logger} from '../models/logger';
 import {Scene, Vec2, BoundingBox} from '../models/scene';
 import {Delta} from './delta';
 import {SpellEngine} from './spell_engine';
+import {pullAll} from 'lodash';
 
 
 @Injectable()
@@ -56,17 +57,19 @@ export class GameEngine {
         }
         // Collect deltas:
         let deltas: Array<Delta> = [];
+        let projectile_consumed = [];
         for (let projectile of this.scene.projectiles) {
             for (let entity of this.scene.entities) {
                 if (this.collide(projectile, entity) && projectile.canCollideWith(entity)) {
                     let res = this.spell_engine.onHit(projectile, entity);
+                    projectile_consumed.push(projectile);
                     deltas.push(...res);
                     break;
                 }
             }
         }
         // Clear all projectiles
-        this.scene.projectiles = [];
+        pullAll(this.scene.projectiles, projectile_consumed);
         // Resolve deltas
         this.process_deltas(deltas);
     }

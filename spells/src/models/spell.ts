@@ -132,7 +132,7 @@ export class Projectile implements Vec2, HasSpeed, BoundingBox, ProjectileIntern
     ignore_those: Entity[] = [];
 
     canCollideWith(entity: Entity): boolean {
-        return this.ignore_those.indexOf(entity) !== -1;
+        return this.ignore_those.indexOf(entity) === -1;
     }
 }
 

@@ -39,7 +39,7 @@ export class Scene {
         precision: 1,
         level: 1,
         effects: [],
-    }), entity({
+    }, 'Bob'), entity({
         x: 0,
         y: 0,
         w: 16,
@@ -55,6 +55,6 @@ export class Scene {
         precision: 2,
         level: 2,
         effects: [],
-    })
+    }, 'Alice')
     ];
 }

@@ -62,6 +62,7 @@ export class SpellEngine {
         deltas.push(...lycan.new_projectiles.map(proj => ({
             spawn_projectile: proj
         })));
+        this.logger.log(`Projectile ${spell.name} has hitten ${target.name}`)
         return deltas;
     }
 
