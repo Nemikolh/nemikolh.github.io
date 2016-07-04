@@ -45,6 +45,7 @@ export interface ProjectilePartialDef {
 
 export interface ProjectileWithScript extends ProjectileDef {
     on_hit: SpellEffectOnHit;
+    on_end_range: SpellEffectOnEndRange;
 }
 
 export interface AOEDef {
@@ -80,6 +81,18 @@ export interface SpellEffect {
         $caster: EntityOut;
         $lycan: LycanOut;
         $interrupt: Interrupt;
+    }): void;
+}
+
+export interface SpellEffectOnEndRange {
+    (in_: {
+        $caster: EntitySnapshotIn;
+        $self: ProjectilePartialDef;
+        $spell: SpellIn;
+        $lycan: LycanIn;
+    }, out: {
+        $caster: EntitySnapshotOut;
+        $lycan: LycanOut;
     }): void;
 }
 

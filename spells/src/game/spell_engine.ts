@@ -63,8 +63,25 @@ export class SpellEngine {
         deltas.push(...lycan.new_projectiles.map(proj => ({
             spawn_projectile: proj
         })));
-        this.logger.log(`Projectile ${spell.name} has hitten ${target.name}`)
+        this.logger.log(`Projectile ${spell.name} has hitten ${target.name}`);
         return deltas;
+    }
+
+    onEndRange(projectile: Projectile) {
+        let spell = projectile.spell;
+        let lycan = new Lycan(projectile.ignore_those);
+        let in_ = {
+            $caster: spell.caster,
+            $spell: spell.definitions,
+            $lycan: lycan,
+            $self: projectile as any, // FIXME
+        };
+        let out = {
+            $caster: { current: new EntityOut() },
+            $lycan: lycan,
+        };
+        this.logger.log(`Projectile ${spell.name} has reached the end of its range`);
+        projectile.on_end_range(in_, out);
     }
 
     private castSpellEffects(

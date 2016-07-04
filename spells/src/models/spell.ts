@@ -2,10 +2,12 @@ import {SpellSpec, SpellCost, ProjectileCtor} from '../spells/spec';
 import {AOECtor, SpellEffect, SpellEffectFailure} from '../spells/spec';
 import {ProjectileDef, ProjectileInternal} from '../spells/spec';
 import {Shape, Square, Disc} from '../spells/spec';
-import {SpellEffectOnHit} from '../spells/spec';
+import {SpellEffectOnHit, SpellEffectOnEndRange} from '../spells/spec';
 import {Vec2, HasSpeed, BoundingBox} from './scene';
 import {Entity} from './entity';
 
+
+const TILE_SIZE = 16;
 
 /// This class parse a SpellSpec and converts it
 /// into an internal Spell object that can be used
@@ -64,6 +66,7 @@ export class Spell {
                    );
                 }
                 new_spell.on_hit = projectile_def.on_hit;
+                new_spell.on_end_range = projectile_def.on_end_range;
                 return new_spell;
             };
         }
@@ -78,8 +81,8 @@ export class Spell {
 
     private dir_and_speed_to_vec(direction: number, speed: number): Vec2 {
         return {
-            x: speed * 16 * Math.cos(direction),
-            y: speed * 16 * Math.sin(direction),
+            x: speed * TILE_SIZE * Math.cos(direction),
+            y: speed * TILE_SIZE * Math.sin(direction),
         };
     }
 
@@ -87,14 +90,14 @@ export class Spell {
         if ((shape as Disc).disc) {
             let d = shape as Disc;
             return {
-                w: d.disc.radius * 16,
-                h: d.disc.radius * 16,
+                w: d.disc.radius * TILE_SIZE,
+                h: d.disc.radius * TILE_SIZE,
             };
         } else {
             let s = shape as Square;
             return {
-                w: s.square.side * 16,
-                h: s.square.side * 16,
+                w: s.square.side * TILE_SIZE,
+                h: s.square.side * TILE_SIZE,
             };
         }
     }
@@ -106,7 +109,7 @@ export class Spell {
             speed,
             caster.x,
             caster.y,
-            proj_def.range,
+            proj_def.range * TILE_SIZE,
             size.w,
             size.h,
             this
@@ -129,6 +132,7 @@ export class Projectile implements Vec2, HasSpeed, BoundingBox, ProjectileIntern
     ) {}
 
     on_hit: SpellEffectOnHit;
+    on_end_range: SpellEffectOnEndRange;
     ignore_those: Entity[] = [];
 
     canCollideWith(entity: Entity): boolean {

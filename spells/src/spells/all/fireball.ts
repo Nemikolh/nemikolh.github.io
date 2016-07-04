@@ -18,7 +18,8 @@ export const fireball: SpellSpec = {
                 on_hit: (in_, out) => {
                     out.$target.damages -= in_.$caster.intelligence * 1.5 + 3;
                     out.$lycan.spawn(in_.$spell.projectile['fireball'](in_.$self));
-                }
+                },
+                on_end_range: () => {}
             }
         },
         aoe: {}

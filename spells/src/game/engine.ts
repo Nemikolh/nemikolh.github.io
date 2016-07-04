@@ -3,7 +3,7 @@ import {Logger} from '../models/logger';
 import {Scene, Vec2, BoundingBox} from '../models/scene';
 import {Delta} from './delta';
 import {SpellEngine} from './spell_engine';
-import {pullAll} from 'lodash';
+import {pullAll, remove} from 'lodash';
 
 
 @Injectable()
@@ -52,8 +52,16 @@ export class GameEngine {
             entity.y += entity.speed.y * elapsed;
         }
         for (let projectile of this.scene.projectiles) {
-            projectile.x += projectile.speed.x * elapsed;
-            projectile.y += projectile.speed.y * elapsed;
+            let dx = projectile.speed.x * elapsed;
+            let dy = projectile.speed.y * elapsed;
+            projectile.x += dx;
+            projectile.y += dy;
+            projectile.range -= Math.sqrt(dx * dx + dy * dy);
+        }
+        // Remove projectiles that have reached the end of their range:
+        let end_range_proj = remove(this.scene.projectiles, p => p.range < 0);
+        for (let proj of end_range_proj) {
+            this.spell_engine.onEndRange(proj);
         }
         // Collect deltas:
         let deltas: Array<Delta> = [];
