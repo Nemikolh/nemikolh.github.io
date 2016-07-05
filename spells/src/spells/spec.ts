@@ -84,18 +84,6 @@ export interface SpellEffect {
     }): void;
 }
 
-export interface SpellEffectOnEndRange {
-    (in_: {
-        $caster: EntitySnapshotIn;
-        $self: ProjectilePartialDef;
-        $spell: SpellIn;
-        $lycan: LycanIn;
-    }, out: {
-        $caster: EntitySnapshotOut;
-        $lycan: LycanOut;
-    }): void;
-}
-
 export interface SpellEffectOnHit {
     (in_: {
         $caster: EntitySnapshotIn;
@@ -121,6 +109,7 @@ export interface SpellEffectOnEndRange {
       $lycan: LycanOut;
     }): void;
 }
+
 export interface SpellEffectFailure {
     (in_: any, out: any): void;
 }
