@@ -31,7 +31,7 @@ export class SpellEngine {
             this.logger.log(`Casting spell! ${to_cast.name}`);
             // TODO: Switch to on_start_cast, and start timer to on_end_cast
             return this.castSpellEffects(
-                caster.clone(),
+                caster,
                 to_cast,
                 to_cast.on_end_cast
             );
@@ -90,14 +90,14 @@ export class SpellEngine {
     }
 
     private castSpellEffects(
-        caster: EntitySnapshot,
+        caster: Entity,
         spell: Spell,
         effects: SpellEffect[]
     ): Delta[] {
         let deltas: Delta[] = [];
         for (let effect of effects) {
             let interrupt = false;
-            let lycan = new Lycan([caster.current]);
+            let lycan = new Lycan([caster]);
             let in_ = {
                 $caster: caster,
                 $spells: spell.definitions,
@@ -109,7 +109,7 @@ export class SpellEngine {
                 $interrupt: () => { interrupt = true; },
             };
             effect(in_, out);
-            caster.health -= out.$caster.damages;
+            out.$caster.finalize(caster);
             deltas.push(...lycan.new_projectiles.map(proj => ({
                 spawn_projectile: proj
             })));
