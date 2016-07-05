@@ -75,7 +75,7 @@ export interface SpellCost {
 export interface SpellEffect {
     (in_: {
         $caster: EntityIn;
-        $spell: SpellIn;
+        $spells: SpellIn;
         $lycan: LycanIn;
     }, out: {
         $caster: EntityOut;
@@ -89,7 +89,7 @@ export interface SpellEffectOnHit {
         $caster: EntitySnapshotIn;
         $target: EntityIn;
         $self: ProjectilePartialDef;
-        $spell: SpellIn;
+        $spells: SpellIn;
         $lycan: LycanIn;
     }, out: {
         $caster: EntitySnapshotOut;
@@ -125,14 +125,16 @@ export interface ProjectileCtor {
     // Please do not change this:
     // It is to remember that this type is partially hidden
     // to the script
-    (inherit_from?: ProjectilePartialDef | ProjectileInternal): ProjectileInternal;
+    (inherit_from?: ProjectileInternal | ProjectilePartialDef): ProjectileInternal;
+    (new_props: ProjectilePartialDef, take_rest_from: ProjectileInternal): ProjectileInternal;
 }
 
 export interface AOECtor {
     // Please do not change this:
     // It is to remember that this type is partially hidden
     // to the script
-    (inherit_from?: AOEPartialDef | AOEInternal): AOEInternal;
+    (inherit_from?: AOEInternal | AOEPartialDef): AOEInternal;
+    (new_props: AOEPartialDef, take_rest_from: AOEInternal): AOEInternal;
 }
 
 /// =========================================================

@@ -57,13 +57,13 @@ export class GameEngine {
             projectile.y += dy;
             projectile.range -= Math.sqrt(dx * dx + dy * dy);
         }
+        // Collect deltas:
+        let deltas: Array<Delta> = [];
         // Remove projectiles that have reached the end of their range:
         let end_range_proj = remove(this.scene.projectiles, p => p.range < 0);
         for (let proj of end_range_proj) {
-            this.spell_engine.onEndRange(proj);
+            deltas.push(...this.spell_engine.onEndRange(proj));
         }
-        // Collect deltas:
-        let deltas: Array<Delta> = [];
         let projectile_consumed = [];
         for (let projectile of this.scene.projectiles) {
             for (let entity of this.scene.entities) {

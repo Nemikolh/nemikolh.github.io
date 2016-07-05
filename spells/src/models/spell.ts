@@ -1,6 +1,7 @@
 import {SpellSpec, SpellCost, ProjectileCtor} from '../spells/spec';
 import {AOECtor, SpellEffect, SpellEffectFailure} from '../spells/spec';
 import {ProjectileDef, ProjectileInternal} from '../spells/spec';
+import {ProjectilePartialDef} from '../spells/spec';
 import {Shape, Square, Disc} from '../spells/spec';
 import {SpellEffectOnHit, SpellEffectOnEndRange} from '../spells/spec';
 import {Vec2, HasSpeed, BoundingBox} from './scene';
@@ -33,31 +34,52 @@ export class Spell {
         let projectiles: { [name: string]: ProjectileCtor } = {};
         for (let name in spell.definitions.projectile) {
             let projectile_def = spell.definitions.projectile[name];
-            projectiles[name] = (inherit_from) => {
+            projectiles[name] = (new_props?, inherit_from?) => {
+                // We can't use arguments in lambdas, so let's assume we
+                // don't passed undefined.
+                // Inherit_from is the first arg if only one arg is passed
+                if (!inherit_from) {
+                    inherit_from = new_props;
+                }
                 let new_spell: Projectile;
                 if (inherit_from) {
                     // ProjectileInternal
                     if (inherit_from instanceof Projectile) {
-                        // Weird, we should not need that line...
-                        new_spell = inherit_from as Projectile;
+                        new_spell = inherit_from.clone();
+
+                        if (new_props && new_props !== inherit_from) {
+                            let props: ProjectilePartialDef = new_props;
+                            new_spell.speed = this.dir_and_speed_to_vec(
+                                props.direction || projectile_def.direction,
+                                props.speed || projectile_def.speed
+                            );
+                            if (props.range) {
+                                new_spell.range = props.range * TILE_SIZE;
+                            }
+                            if (props.hitbox) {
+                                let {w, h} = this.sizebox(props.hitbox);
+                                new_spell.w = w;
+                                new_spell.h = h;
+                            }
+                        }
                     } else {
                         let old_spell = inherit_from as ProjectileDef;
                         new_spell = this.buildProjectileFromDef(
                             this.caster,
                             spell.definitions.projectile[name]
-                       );
-                       new_spell.speed = this.dir_and_speed_to_vec(
+                        );
+                        new_spell.speed = this.dir_and_speed_to_vec(
                            old_spell.direction || projectile_def.direction,
                            old_spell.speed || projectile_def.speed
-                       );
-                       if (old_spell.range) {
-                           new_spell.range = old_spell.range;
-                       }
-                       if (old_spell.hitbox) {
-                           let {w, h} = this.sizebox(old_spell.hitbox);
-                           new_spell.w = w;
-                           new_spell.h = h;
-                       }
+                        );
+                        if (old_spell.range) {
+                            new_spell.range = old_spell.range * TILE_SIZE;
+                        }
+                        if (old_spell.hitbox) {
+                            let {w, h} = this.sizebox(old_spell.hitbox);
+                            new_spell.w = w;
+                            new_spell.h = h;
+                        }
                     }
                 } else {
                     new_spell = this.buildProjectileFromDef(
@@ -65,6 +87,7 @@ export class Spell {
                         spell.definitions.projectile[name]
                    );
                 }
+                // Those props can't be overriden
                 new_spell.on_hit = projectile_def.on_hit;
                 new_spell.on_end_range = projectile_def.on_end_range;
                 return new_spell;
@@ -137,6 +160,18 @@ export class Projectile implements Vec2, HasSpeed, BoundingBox, ProjectileIntern
 
     canCollideWith(entity: Entity): boolean {
         return this.ignore_those.indexOf(entity) === -1;
+    }
+
+    clone(): Projectile {
+        return new Projectile(
+            this.speed,
+            this.x,
+            this.y,
+            this.range,
+            this.w,
+            this.h,
+            this.spell
+        );
     }
 }
 

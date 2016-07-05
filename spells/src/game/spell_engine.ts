@@ -47,7 +47,7 @@ export class SpellEngine {
         let in_ = {
             $caster: spell.caster,
             $target: target,
-            $spell: spell.definitions,
+            $spells: spell.definitions,
             $lycan: lycan,
             $self: projectile as any, // FIXME
         };
@@ -67,12 +67,12 @@ export class SpellEngine {
         return deltas;
     }
 
-    onEndRange(projectile: Projectile) {
+    onEndRange(projectile: Projectile): Delta[] {
         let spell = projectile.spell;
         let lycan = new Lycan(projectile.ignore_those);
         let in_ = {
             $caster: spell.caster,
-            $spell: spell.definitions,
+            $spells: spell.definitions,
             $lycan: lycan,
             $self: projectile as any, // FIXME
         };
@@ -80,8 +80,13 @@ export class SpellEngine {
             $caster: { current: new EntityOut() },
             $lycan: lycan,
         };
-        this.logger.log(`Projectile ${spell.name} has reached the end of its range`);
         projectile.on_end_range(in_, out);
+        out.$caster.current.finalize(spell.caster);
+        this.logger.log(`Projectile ${spell.name} has reached the end of its range`);
+        // Collect all projectiles
+        return lycan.new_projectiles.map(proj => ({
+            spawn_projectile: proj
+        }));
     }
 
     private castSpellEffects(
@@ -95,7 +100,7 @@ export class SpellEngine {
             let lycan = new Lycan([caster.current]);
             let in_ = {
                 $caster: caster,
-                $spell: spell.definitions,
+                $spells: spell.definitions,
                 $lycan: lycan,
             };
             let out = {
