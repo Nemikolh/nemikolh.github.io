@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
 import {Logger} from './models/logger';
 import {SceneComp} from './renderer/scene';
+import {SpellSpecList} from './spells/all';
 import {GameEngine} from './game/engine';
 
 let appTemplate = require<string>('./app.html');
@@ -15,7 +16,13 @@ let appCss = require<any>('./app.scss');
 })
 export class App {
 
-    constructor(private game: GameEngine, private logger: Logger) {}
+    dropdownIsOpen: boolean = false;
+
+    constructor(
+        private game: GameEngine,
+        private logger: Logger,
+        private spellList: SpellSpecList
+    ) {}
 
     isStop() {
         return this.game.hasStarted();
@@ -23,6 +30,15 @@ export class App {
 
     logEntry(): string {
         return this.logger.last_log;
+    }
+
+    toggleDropDown() {
+        this.dropdownIsOpen = !this.dropdownIsOpen;
+    }
+
+    selectSpell(spell) {
+        this.spellList.selected_spell = spell;
+        this.toggleDropDown();
     }
 
     togglePhysics() {

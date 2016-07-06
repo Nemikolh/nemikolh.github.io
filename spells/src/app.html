@@ -4,6 +4,19 @@
       <span *ngIf="isStop()">Stop</span>
       <span *ngIf="!isStop()">Play</span>
   </button>
+  <div class="dropdown settings--dropdown" [ngClass]="{'open': dropdownIsOpen}">
+    <button class="btn btn-default dropdown-toggle" (click)="toggleDropDown()">
+      Spell list
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li *ngFor="let spell of spellList.spells"
+            [ngClass]="{'disabled': spell == spellList.selected_spell}">
+            <a href="#" (click)="selectSpell(spell)">{{spell.name}}</a>
+        </li>
+      <!-- <li role="separator" class="divider"></li> -->
+    </ul>
+  </div>
   <button class="btn btn-primary" (click)="castSpell()">Cast</button>
   <span>Last log entry: {{logEntry()}}</span>
 <div>
