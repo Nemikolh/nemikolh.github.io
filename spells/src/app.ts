@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
 import {Logger} from './models/logger';
+import {SceneProvider} from './models/scene';
 import {SceneComp} from './renderer/scene';
 import {SpellSpecList} from './spells/all';
 import {GameEngine} from './game/engine';
@@ -9,10 +10,10 @@ let appTemplate = require<string>('./app.html');
 let appCss = require<any>('./app.scss');
 
 @Component({
-  selector: 'app',
-  templateUrl: appTemplate,
-  styles: [appCss.toString()],
-  directives: [SceneComp, CORE_DIRECTIVES]
+    selector: 'app',
+    templateUrl: appTemplate,
+    styles: [appCss.toString()],
+    directives: [SceneComp, CORE_DIRECTIVES]
 })
 export class App {
 
@@ -21,7 +22,8 @@ export class App {
     constructor(
         private game: GameEngine,
         private logger: Logger,
-        private spellList: SpellSpecList
+        private spellList: SpellSpecList,
+        private sceneProvider: SceneProvider
     ) {}
 
     isStop() {
@@ -47,6 +49,10 @@ export class App {
         } else {
             this.game.start();
         }
+    }
+
+    resetScene() {
+        this.sceneProvider.resetScene();
     }
 
     castSpell() {

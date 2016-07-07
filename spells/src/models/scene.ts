@@ -18,8 +18,16 @@ export interface BoundingBox {
 
 export const ZeroVec2: Vec2 = {x: 0, y: 0};
 
+/// If the scene needs to be modified,
+/// this data structure needs to be updated as well.
+interface SceneData {
+    projectiles: Projectile[];
+    aoes: AOE[];
+    entities: Entity[];
+}
+
 @Injectable()
-export class Scene {
+export class Scene implements SceneData {
     projectiles: Projectile[] = [];
 
     aoes: AOE[] = [];
@@ -57,4 +65,44 @@ export class Scene {
         effects: [],
     }, 'Alice')
     ];
+}
+
+@Injectable()
+export class SceneProvider {
+
+    // Indirection needed to make TypeScript 1.8 privacy checker
+    // happy. No longer needed in TypeScript 2.0
+    private scene: { scene: Scene } = { scene: new Scene() };
+
+    getSceneProxy(): SceneData {
+        let provider = this.scene;
+        class SceneProxy implements SceneData {
+            get projectiles(): Projectile[] {
+                return provider.scene.projectiles;
+            }
+            set projectiles(new_val: Projectile[]) {
+                provider.scene.projectiles = new_val;
+            }
+
+            get aoes(): AOE[] {
+                return provider.scene.aoes;
+            }
+            set aoes(new_val: AOE[]) {
+                provider.scene.aoes = new_val;
+            }
+
+            get entities(): Entity[] {
+                return provider.scene.entities;
+            }
+            set entities(new_val: Entity[]) {
+                provider.scene.entities = new_val;
+            }
+        }
+
+        return new SceneProxy();
+    }
+
+    resetScene() {
+        this.scene.scene = new Scene();
+    }
 }

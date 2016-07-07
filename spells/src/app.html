@@ -1,5 +1,6 @@
 <scene></scene>
 <div class="container">
+  <button class="btn btn-primary" (click)="resetScene()">Reset</button>
   <button class="btn btn-primary" (click)="togglePhysics()">
       <span *ngIf="isStop()">Stop</span>
       <span *ngIf="!isStop()">Play</span>
