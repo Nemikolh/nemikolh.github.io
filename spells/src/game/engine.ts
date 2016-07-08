@@ -79,6 +79,11 @@ export class GameEngine {
         pullAll(this.scene.projectiles, projectile_consumed);
         // Resolve deltas
         this.process_deltas(deltas);
+        // Remove entities with not enough health:
+        let removed_entities = remove(this.scene.entities, e => e.health < 0);
+        for (let entity of removed_entities) {
+            this.logger.log(`${entity.name} died horribly...`);
+        }
     }
 
     private process_deltas(deltas: Delta[]) {
