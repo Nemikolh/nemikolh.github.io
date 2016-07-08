@@ -18,7 +18,7 @@ export const fireball: SpellSpec = {
                     disc: { radius: 0.5 }
                 },
                 on_hit: (in_, out) => {
-                    out.$target.damages -= in_.$caster.intelligence * 1.5 + 3;
+                    out.$target.damages += in_.$caster.intelligence * 1.5 + 3;
                     out.$lycan.spawn(in_.$spells.projectile['fireball'](in_.$self));
                 },
                 on_end_range: (in_, out) => {

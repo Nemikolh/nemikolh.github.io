@@ -45,7 +45,7 @@ export const sparkOfApoc: SpellSpec = {
                     disc: { radius: 0.5 }
                 },
                 on_hit: (in_, out) => {
-                    out.$target.damages -= in_.$caster.intelligence * 1.5 + 3;
+                    out.$target.damages += in_.$caster.intelligence * 1.5 + 3;
                     let seed = Math.random() * Math.PI * 2;
                     out.$lycan.spawn(in_.$spells.projectile['apocalypse']({
                         direction: seed + Math.PI / 2,
