@@ -58,8 +58,14 @@ export class SceneComp {
             ctx.fillRect(aoe.x, aoe.y, aoe.w, aoe.h);
         }
         // Draw entities
-        ctx.fillStyle = 'green';
         for (let entity of this.scene.entities) {
+            if (entity.health < 25) {
+                ctx.fillStyle = 'rgb(202, 144, 0)';
+            } else if (entity.health < 50) {
+                ctx.fillStyle = 'rgb(180, 208, 48)';
+            } else {
+                ctx.fillStyle = 'green';
+            }
             ctx.fillRect(entity.x, entity.y, entity.w, entity.h);
         }
         // Draw projectiles
