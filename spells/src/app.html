@@ -1,10 +1,10 @@
 <scene></scene>
 <div class="container">
   <button class="btn btn-primary" (click)="resetScene()">Reset</button>
-  <button class="btn btn-primary" (click)="togglePhysics()">
-      <span *ngIf="isStop()">Stop</span>
-      <span *ngIf="!isStop()">Play</span>
-  </button>
+  <button class="btn btn-primary"
+    [ngClass]="{ 'disabled': hasNoLog() }"
+    (click)="toggleLog()"
+    >Toggle Log</button>
   <div class="dropdown settings--dropdown" [ngClass]="{'open': dropdownIsOpen}">
     <button class="btn btn-default dropdown-toggle" (click)="toggleDropDown()">
       Spell list
@@ -19,5 +19,13 @@
     </ul>
   </div>
   <button class="btn btn-primary" (click)="castSpell()">Cast</button>
-  <span>Last log entry: {{logEntry()}}</span>
+  <button class="btn btn-primary" (click)="togglePhysics()">
+      <span *ngIf="isStop()">Stop</span>
+      <span *ngIf="!isStop()">Play</span>
+  </button>
+  <log-panel></log-panel>
+  <div style="display: flex; justify-content: space-between;">
+      <entity-stats [entity]="scene.entities[0]"></entity-stats>
+      <entity-stats [entity]="scene.entities[1]"></entity-stats>
+  </div>
 <div>

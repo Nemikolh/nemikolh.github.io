@@ -1,0 +1,15 @@
+<div>
+    <p></p>
+    <label>Last log entry: </label>
+    <span *ngIf="hasLog()">{{lastLogEntry()}}</span>
+    <span *ngIf="!hasLog()" style="font-style: italic;">No log</span>
+</div>
+<div [ngClass]="{
+    'collapsing': is_collapsing,
+    'collapse': is_collapsed,
+    'collapse in': !is_collapsed
+    }"
+    style="overflow: hidden;"
+    [ngStyle]="{ 'height': height}">
+    <pre style="height: 100%;">{{fullLog()}}</pre>
+</div>
