@@ -25,7 +25,7 @@
   </button>
   <log-panel></log-panel>
   <div style="display: flex; justify-content: space-between;">
-      <entity-stats [entity]="scene.entities[0]"></entity-stats>
-      <entity-stats [entity]="scene.entities[1]"></entity-stats>
+      <entity-stats *ngFor="let entity of scene.entities"
+                    [entity]="entity"></entity-stats>
   </div>
 <div>
