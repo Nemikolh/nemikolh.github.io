@@ -169,15 +169,15 @@ our changes by creating a pull request:
 ## The pull request can't be merged!
 
 Oh no! Many contributions were merged before ours could be. Some of
-those contributions have changed similar part and files that were
-there before have disappeared. We have conflicts!
+those contributions have changed similar part of the code base that
+we also modified. We have conflicts!
 
 Don't panic.
 
-This scenario is pretty common. Particularly on popular repository
-that have many contributors and most of them are very active.
+This scenario is pretty common. Particularly on popular repositories
+that have many contributors, with many of them very active.
 Git will help you to understand what went wrong and help you
-solving the conflicts. First update your local refs:
+solve the conflicts. First update your local refs:
 
 ```bash
 git fetch main
@@ -279,7 +279,7 @@ git rebase --continue
 
 :tada: :tada: :tada: :tada:
 
-Bravo! Your pull request was merged.
+Bravo! Your pull request was merged!
 
 It's now time, to do some cleanup:
 
@@ -292,24 +292,24 @@ And [then you can start again...](#loop)
 
 ## <a name="oops"></a> Oops! I kept working on the old branch
 
-No worries! We are all human and we do make mistake.
+No worries! We are all human and we *do* make mistakes.
 Git is the stupid content tracker and he does not know
 anything about your work-flow. It does exactly what you
 tells him to do even if it's not what you intended to do.
 
 So our branch was merged on the main repository. However,
-we have added new commits to `abranch` that was merged
-in the main repository.
+we have added new commits to `abranch` instead of following
+restarting afresh from `main-master`.
 
 If one of github buttons was used, it can lead to different
 problems.
 
 ![buttons](https://help.github.com/assets/images/help/pull_requests/select-rebase-and-merge-from-drop-down-menu.png)
 
-However, whatever the problems that any of those button cause, can
+However, whatever problems any of these button caused, they can all
 be solved using `git cherry-pick`.
 With this command you can port any commits you have done on `abranch`
-to a new branch that is starting from `main/master`.
+to a new clean branch starting from `main/master`.
 
 ## Reset a broken branch.
 
